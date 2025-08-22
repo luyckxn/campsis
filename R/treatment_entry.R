@@ -251,6 +251,20 @@ processRefArg <- function(ref) {
 }
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+#' @rdname loadFromJSON
+setMethod("loadFromJSON", signature=c("bolus_wrapper", "ANY"), definition=function(object, json) {
+  object <- mapJSONPropertiesToSlot(object, json)
+  object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
+  object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
+  object@lag <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
+  object@ref <- processRefArg(NULL)
+  return(object)
+})
+
+#_______________________________________________________________________________
 #----                             sample                                    ----
 #_______________________________________________________________________________
 

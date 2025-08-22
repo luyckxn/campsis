@@ -191,6 +191,16 @@ setMethod("length", signature=c("dataset"), definition=function(x) {
 })
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+#' @rdname loadFromJSON
+setMethod("loadFromJSON", signature=c("dataset", "ANY"), definition=function(object, json) {
+  object <- jsonToCampsisDataset(object=object, json=json)
+  return(object)
+})
+
+#_______________________________________________________________________________
 #----                             replace                                   ----
 #_______________________________________________________________________________
 
@@ -220,6 +230,19 @@ setMethod("setSubjects", signature = c("dataset", "integer"), definition = funct
     object <- object %>% replace(arm)
   }
   methods::validObject(object)
+  return(object)
+})
+
+#_______________________________________________________________________________
+#----                             setLabel                                  ----
+#_______________________________________________________________________________
+
+#' @rdname setLabel
+#' @importFrom methods validObject
+setMethod("setLabel", signature = c("dataset", "character"), definition = function(object, x) {
+  object <- object %>% createDefaultArmIfNotExists()
+  object@arms@list[[1]] <- object@arms@list[[1]] %>%
+    setLabel(x)
   return(object)
 })
 

@@ -1,7 +1,7 @@
 Type: Package
 Package: campsis
 Title: Generic PK/PD Simulation Platform CAMPSIS
-Version: 1.7.0
+Version: 1.8.0
 Authors@R: 
     person("Nicolas", "Luyckx", , "nicolas.luyckx@calvagone.com", role = c("aut", "cre"))
 Description: A generic, easy-to-use and intuitive
@@ -30,6 +30,7 @@ Imports:
     furrr,
     future,
     ggplot2,
+    jsonlite,
     MASS,
     methods,
     progressr,
@@ -105,6 +106,7 @@ Collate:
     'internal_settings.R'
     'simulation_settings.R'
     'plan_setup.R'
+    'json_interface.R'
     'simulate_preprocess.R'
     'simulate.R'
     'results_processing.R'

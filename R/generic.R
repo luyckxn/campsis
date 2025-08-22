@@ -126,6 +126,25 @@ setGeneric("getTimes", function(object) {
 })
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+#' Fill-in S4 object from the JSON content.
+#' 
+#' @param object pre-initiated S4 object
+#' @param json JSON (usually a list)
+#' @return the loaded S4 object
+#' @export
+#' @rdname loadFromJSON
+loadFromJSON <- function(object, json) {
+  stop("No default function is provided")
+}
+
+setGeneric("loadFromJSON", function(object, json) {
+  standardGeneric("loadFromJSON")
+})
+
+#_______________________________________________________________________________
 #----                           repeatSchedule                              ----
 #_______________________________________________________________________________
 
