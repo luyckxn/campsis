@@ -255,7 +255,7 @@ processRefArg <- function(ref) {
 #_______________________________________________________________________________
 
 #' @rdname loadFromJSON
-setMethod("loadFromJSON", signature=c("bolus_wrapper", "ANY"), definition=function(object, json) {
+setMethod("loadFromJSON", signature=c("bolus_wrapper", "json_element"), definition=function(object, json) {
   object <- mapJSONPropertiesToSlot(object, json)
   object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
   object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))

@@ -3,18 +3,21 @@
 %   R/observations.R, R/dataset.R
 \name{loadFromJSON}
 \alias{loadFromJSON}
-\alias{loadFromJSON,bolus_wrapper-method}
-\alias{loadFromJSON,observations-method}
-\alias{loadFromJSON,dataset-method}
+\alias{loadFromJSON,bolus_wrapper,json_element-method}
+\alias{loadFromJSON,observations,json_element-method}
+\alias{loadFromJSON,dataset,json_element-method}
+\alias{loadFromJSON,dataset,character-method}
 \title{Fill-in S4 object from the JSON content.}
 \usage{
 loadFromJSON(object, json)
 
-\S4method{loadFromJSON}{bolus_wrapper}(object, json)
+\S4method{loadFromJSON}{bolus_wrapper,json_element}(object, json)
 
-\S4method{loadFromJSON}{observations}(object, json)
+\S4method{loadFromJSON}{observations,json_element}(object, json)
 
-\S4method{loadFromJSON}{dataset}(object, json)
+\S4method{loadFromJSON}{dataset,json_element}(object, json)
+
+\S4method{loadFromJSON}{dataset,character}(object, json)
 }
 \arguments{
 \item{object}{pre-initiated S4 object}

@@ -137,7 +137,7 @@ setGeneric("getTimes", function(object) {
 #' @export
 #' @rdname loadFromJSON
 loadFromJSON <- function(object, json) {
-  stop("No default function is provided")
+  stop(sprintf("No default function is provided for 'object': %s, 'json': %s", class(object), class(json)))
 }
 
 setGeneric("loadFromJSON", function(object, json) {

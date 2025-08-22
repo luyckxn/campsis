@@ -77,7 +77,7 @@ EventRelatedObservations <- function(times, compartment=NA) {
 #_______________________________________________________________________________
 
 #' @rdname loadFromJSON
-setMethod("loadFromJSON", signature=c("observations", "ANY"), definition=function(object, json) {
+setMethod("loadFromJSON", signature=c("observations", "json_element"), definition=function(object, json) {
   object <- mapJSONPropertiesToSlot(object, json)
   return(object)
 })

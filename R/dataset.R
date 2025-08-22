@@ -195,9 +195,16 @@ setMethod("length", signature=c("dataset"), definition=function(x) {
 #_______________________________________________________________________________
 
 #' @rdname loadFromJSON
-setMethod("loadFromJSON", signature=c("dataset", "ANY"), definition=function(object, json) {
+setMethod("loadFromJSON", signature=c("dataset", "json_element"), definition=function(object, json) {
   object <- jsonToCampsisDataset(object=object, json=json)
   return(object)
+})
+
+#' @rdname loadFromJSON
+setMethod("loadFromJSON", signature=c("dataset", "character"), definition=function(object, json) {
+  rawJson <- suppressWarnings(paste0(readLines(json), collapse="\n"))
+  json <- jsonlite::parse_json(rawJson, simplifyVector=FALSE)
+  return(loadFromJSON(object=object, json=JSONElement(json)))
 })
 
 #_______________________________________________________________________________

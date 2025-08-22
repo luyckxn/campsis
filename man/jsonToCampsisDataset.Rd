@@ -9,7 +9,7 @@ jsonToCampsisDataset(object, json)
 \arguments{
 \item{object}{empty dataset}
 
-\item{json}{json object}
+\item{json}{json element}
 }
 \value{
 Campsis dataset

@@ -9,11 +9,12 @@ toCampsisElement <- function(json) {
   }
   
   object <- new(type)
-  object <- loadFromJSON(object, json)
+  object <- loadFromJSON(object, JSONElement(json))
   return(object)
 }
 
 mapJSONPropertiesToSlot <- function(object, json) {
+  json <- json@data
   properties <- names(json)
   properties <- properties[properties != "type"]
   
@@ -30,12 +31,12 @@ mapJSONPropertiesToSlot <- function(object, json) {
 #' JSON to Campsis dataset.
 #' 
 #' @param object empty dataset
-#' @param json json object
+#' @param json json element
 #' @return Campsis dataset
 #' @importFrom jsonlite parse_json
 #' 
 jsonToCampsisDataset <- function(object, json) {
-  json <- jsonlite::parse_json(json, simplifyVector=FALSE)
+  json <- json@data
   dataset <- object
   
   if (length(json)==0) {
