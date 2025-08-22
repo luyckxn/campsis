@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://calvagone.github.io/campsis.doc/schema/1.0/campsis.schema.json",
+  "$comment": "Campsis JSON Schema v1.0 © 2025 [Nicolas Luyckx / Calvagone]. Licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt this schema with attribution.",
+  "title": "Campsis JSON Schema",
+  "$ref": "#/$defs/dataset",
+  "$defs": {
+    "dataset": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/arm" },
+          { "$ref": "#/$defs/arm_attributes" },
+          { "$ref": "#/$defs/bolus" },
+          { "$ref": "#/$defs/infusion" },
+		  { "$ref": "#/$defs/observations" }
+        ]
+      }
+    },
+    "arm": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "arm" },
+        "list": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/arm_attributes" },
+              { "$ref": "#/$defs/bolus" },
+              { "$ref": "#/$defs/infusion" },
+			  { "$ref": "#/$defs/observations" }
+            ]
+          }
+        }
+      },
+      "required": ["list"],
+      "additionalProperties": false
+    },
+    "arm_attributes": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "arm_attributes" },
+        "subjects": { "type": "integer", "minimum": 1 },
+        "label": { "type": "string" }
+      },
+      "required": ["subjects", "label"],
+      "additionalProperties": false
+    },
+    "bolus": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "bolus" },
+        "time": { "type": "number" },
+        "amount": { "type": "number" },
+        "compartment": { "type": "array", "items": {"type": "string"} },
+        "ii": { "type": "number" },
+        "addl": { "type": "integer" }
+      },
+      "required": ["time", "amount", "compartment"],
+      "additionalProperties": false
+    },
+    "infusion": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "infusion" },
+        "time": { "type": "number" },
+        "amount": { "type": "number" },
+        "compartment": { "type": "array", "items": {"type": "string"} },
+        "ii": { "type": "number" },
+        "addl": { "type": "integer" }
+      },
+      "required": ["time", "amount", "compartment"],
+      "additionalProperties": false
+    },
+	"observations": {
+      "type": "object",
+      "properties": {
+		"type": { "const": "observations" },
+        "times": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            { "$ref": "#/$defs/sequence" }
+          ]
+        },
+        "repeat_at": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": { "type": "number" }
+            },
+            { "$ref": "#/$defs/dosing_schedule" }
+          ]
+        }
+      },
+      "required": ["times"],
+      "additionalProperties": false
+    },
+    "sequence": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "sequence" },
+        "start": { "type": "number" },
+        "end": { "type": "number" },
+        "by": { "type": "number" }
+      },
+      "required": ["from", "to"]
+    },
+    "dosing_schedule": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "dosing_schedule" }
+      },
+      "required": []
+    },
+    "cyclic_schedule": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "cyclic_schedule" },
+        "duration": { "type": "number" },
+        "repetitions": { "type": "integer" }
+      },
+      "required": ["duration", "repetitions"]
+    }
+  }
+}

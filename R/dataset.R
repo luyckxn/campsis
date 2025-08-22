@@ -201,8 +201,17 @@ setMethod("loadFromJSON", signature=c("dataset", "json_element"), definition=fun
 })
 
 #' @rdname loadFromJSON
+#' @importFrom jsonvalidate json_schema
 setMethod("loadFromJSON", signature=c("dataset", "character"), definition=function(object, json) {
   rawJson <- suppressWarnings(paste0(readLines(json), collapse="\n"))
+  
+  # Validate content against schema
+  if (getCampsisOption(name="VALIDATE_JSON", default=TRUE)) {
+    schema_file <- system.file("extdata", "campsis.schema.json", package = "campsis")
+    obj <- jsonvalidate::json_schema$new(schema_file)
+    obj$validate(rawJson, error=TRUE)
+  }
+
   json <- jsonlite::parse_json(rawJson, simplifyVector=FALSE)
   return(loadFromJSON(object=object, json=JSONElement(json)))
 })
