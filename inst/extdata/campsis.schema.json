@@ -82,7 +82,7 @@
               "type": "array",
               "items": { "type": "number" }
             },
-            { "$ref": "#/$defs/sequence" }
+            { "$ref": "#/$defs/time_sequence" }
           ]
         },
         "repeat_at": {
@@ -98,15 +98,15 @@
       "required": ["times"],
       "additionalProperties": false
     },
-    "sequence": {
+    "time_sequence": {
       "type": "object",
       "properties": {
-        "type": { "const": "sequence" },
+        "type": { "const": "time_sequence" },
         "start": { "type": "number" },
         "end": { "type": "number" },
         "by": { "type": "number" }
       },
-      "required": ["from", "to"]
+      "required": ["start", "end"]
     },
     "dosing_schedule": {
       "type": "object",

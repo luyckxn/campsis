@@ -20,8 +20,15 @@ mapJSONPropertiesToSlot <- function(object, json) {
   
   for (property in properties) {
     value <- json[[property]]
-    if (is.list(value)) {
-      value <- unlist(value)
+    isList <- is.list(value)
+    
+    if (isList && !is.null(value$type)) {
+      # Recursion
+      value <- mapJSONPropertiesToSlot(object=new(value$type), json=JSONElement(value))
+    } else {
+      if (isList) {
+        value <- unlist(value)
+      }
     }
     slot(object, property) <- value
   }

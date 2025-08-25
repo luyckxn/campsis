@@ -4,27 +4,25 @@
 #_______________________________________________________________________________
 
 checkObservations <- function(object) {
-  check1 <- expectOneOrMore(object, "times")
-  check2 <- expectPositiveValues(object, "times")
-  check3 <- expectOne(object, "compartment")
-  check4 <- character()
+  check1 <- expectOne(object, "compartment")
+  check2 <- character()
   if (object@dv %>% length() > 0 && object@dv %>% length() != object@times %>% length()) {
-    check4 <- "Slots 'times' and dv' don't have the same length"
+    check2 <- "Slots 'times' and dv' don't have the same length"
   }
-  return(c(check1, check2, check3, check4))
+  return(c(check1, check2))
 }
 
 #' 
 #' Observations class.
 #' 
-#' @slot times observation times, numeric vector
+#' @slot times any object that implements 
 #' @slot compartment compartment index (integer) or name (character)
 #' @slot dv observed values, numeric vector (FOR EXTERNAL USE)
 #' @export
 setClass(
   "observations",
   representation(
-    times = "numeric",
+    times = "time_vector",
     compartment = "character",
     dv="numeric"
   ),
@@ -42,11 +40,16 @@ setClass(
 #' @return an observations list
 #' @export
 Observations <- function(times, compartment=NA) {
-  return(new("observations", times=base::sort(unique(times)), compartment=as.character(compartment)))
+  if (is(times, "time_vector")) {
+    # Do nothing
+  } else {
+    times <- TimeVector(times)
+  }
+  return(new("observations", times=times, compartment=as.character(compartment)))
 }
 
 setMethod("getName", signature = c("observations"), definition = function(x) {
-  return(paste0("OBS [", "TIMES=c(", paste0(x@times, collapse=","), "), ", "CMT=", x@compartment, "]"))
+  return(paste0("OBS [", "TIMES=c(", paste0(as.numeric(x@times), collapse=","), "), ", "CMT=", x@compartment, "]"))
 })
 
 #_______________________________________________________________________________
@@ -69,7 +72,7 @@ setClass(
 #' @return observations
 #' @keywords internal
 EventRelatedObservations <- function(times, compartment=NA) {
-  return(new("event_related_observations", times=base::sort(unique(times)), compartment=as.character(compartment)))
+  return(new("event_related_observations", times=TimeVector(times), compartment=as.character(compartment)))
 }
 
 #_______________________________________________________________________________
@@ -78,6 +81,10 @@ EventRelatedObservations <- function(times, compartment=NA) {
 
 #' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("observations", "json_element"), definition=function(object, json) {
+  if (is.numeric(unlist(json@data$times))) {
+    object@times <- TimeVector(unlist(json@data$times))
+    json@data$times <- NULL
+  }
   object <- mapJSONPropertiesToSlot(object, json)
   return(object)
 })
@@ -100,8 +107,10 @@ setMethod("sample", signature = c("observations", "integer"), definition = funct
     obsCmt <- object@compartment
   }
   isEventRelated <- is(object, "event_related_observations")
+  times <- as.numeric(object@times)
+  
   retValue <- tibble::tibble(
-    ID=rep(ids, each=length(object@times)), ARM=as.integer(armID), TIME=rep(object@times, n),
+    ID=rep(ids, each=length(times)), ARM=as.integer(armID), TIME=rep(times, n),
     EVID=as.integer(0), MDV=as.integer(0), AMT=as.numeric(NA), CMT=obsCmt, RATE=as.numeric(0), DOSENO=as.integer(NA),
     INFUSION_TYPE=as.integer(NA), EVENT_RELATED=as.integer(isEventRelated)
   )
@@ -109,7 +118,7 @@ setMethod("sample", signature = c("observations", "integer"), definition = funct
     if (object@dv %>% length() > 0) {
       dv <- object@dv
     } else {
-      dv <- rep(as.numeric(0), object@times %>% length())
+      dv <- rep(as.numeric(0),  length(times))
     }
     retValue <- retValue %>% tibble::add_column(DV=rep(dv, n), .before="INFUSION_TYPE")
   }
