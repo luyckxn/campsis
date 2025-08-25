@@ -20,7 +20,7 @@ setClass(
 
 #' @rdname getTimes
 setMethod("getTimes", signature = c("observations_set"), definition = function(object) {
-  return(object@list %>% purrr::map(.f=~.x@times) %>% purrr::flatten_dbl() %>% unique() %>% base::sort())
+  return(object@list %>% purrr::map(.f=~as.numeric(.x@times)) %>% purrr::flatten_dbl() %>% unique() %>% base::sort())
 })
 
 #_______________________________________________________________________________

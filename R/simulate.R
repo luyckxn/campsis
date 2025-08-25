@@ -155,7 +155,7 @@ simulateDelegateCore <- function(model, dataset, dest, events, tablefun, outvars
 
     # Calling events
     for (event in events@list) {
-      if (iteration@end %in% event@times) {
+      if (iteration@end %in% as.numeric(event@times)) {
         inits <- event@fun(inits)
       }
     }
