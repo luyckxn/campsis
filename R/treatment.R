@@ -140,6 +140,22 @@ setMethod("assignDoseNumber", signature = c("treatment"), definition = function(
 })
 
 #_______________________________________________________________________________
+#----                             getTimes                                  ----
+#_______________________________________________________________________________
+
+#' @rdname getTimes
+setMethod("getTimes", signature = c("treatment"), definition = function(object, unwrap=TRUE) {
+  if (unwrap) {
+    # unwrap can be FALSE on demand (see dataset export where the treatment is first unwrapped)
+    object <- unwrapTreatment(object)
+  }
+  times <- object@list %>%
+    purrr::map(~.x@time) %>%
+    purrr::flatten_dbl()
+  return(base::sort(unique(times)))
+})
+
+#_______________________________________________________________________________
 #----                                  show                                 ----
 #_______________________________________________________________________________
 

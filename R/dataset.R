@@ -475,6 +475,7 @@ exportDelegate <- function(object, dest, model, arm_offset=NULL, offset_within_a
     treatment <- protocol@treatment %>%
       unwrapTreatment() %>%
       assignDoseNumber()
+    doseTimes <- getTimes(protocol@treatment, unwrap=FALSE)
     
     if (treatment %>% length() > 0) {
       maxDoseNumber <- (treatment@list[[treatment %>% length()]])@dose_number
@@ -499,7 +500,7 @@ exportDelegate <- function(object, dest, model, arm_offset=NULL, offset_within_a
     # Create the base table with all treatment entries and observations
     needsDV <- observations@list %>% purrr::map_lgl(~.x@dv %>% length() > 0) %>% any()
     table <- c(treatment@list, observations@list) %>%
-      purrr::map_df(.f=~sample(.x, n=subjects, ids=ids, config=config, armID=armID, needsDV=needsDV))
+      purrr::map_df(.f=~sample(.x, n=subjects, ids=ids, config=config, armID=armID, needsDV=needsDV, doseTimes=doseTimes))
     table <- table %>% dplyr::arrange(dplyr::across(c("ID","TIME","EVID")))
 
     # Sampling covariates

@@ -15,5 +15,7 @@ Observations class.
 \item{\code{compartment}}{compartment index (integer) or name (character)}
 
 \item{\code{dv}}{observed values, numeric vector (FOR EXTERNAL USE)}
+
+\item{\code{rep}}{repetition schedule}
 }}
 

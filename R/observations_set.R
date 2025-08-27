@@ -19,8 +19,11 @@ setClass(
 #_______________________________________________________________________________
 
 #' @rdname getTimes
-setMethod("getTimes", signature = c("observations_set"), definition = function(object) {
-  return(object@list %>% purrr::map(.f=~as.numeric(.x@times)) %>% purrr::flatten_dbl() %>% unique() %>% base::sort())
+setMethod("getTimes", signature = c("observations_set"), definition = function(object, doseTimes=NULL) {
+  times <- object@list %>%
+    purrr::map(.f=~getTimes(.x, doseTimes=doseTimes)) %>%
+    purrr::flatten_dbl()
+  return(base::sort(unique(times)))
 })
 
 #_______________________________________________________________________________
@@ -28,7 +31,7 @@ setMethod("getTimes", signature = c("observations_set"), definition = function(o
 #_______________________________________________________________________________
 
 setMethod("show", signature=c("observations_set"), definition=function(object) {
-  times <- object %>% getTimes()
+  times <-  getTimes(object, doseTimes=NULL)
   cat(paste0("-> Obs. times: ", paste0(times, collapse=","), " (",
              times %>% length() , " observations in total)"))
 })

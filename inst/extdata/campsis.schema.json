@@ -86,7 +86,7 @@
             { "$ref": "#/$defs/time_sequence" }
           ]
         },
-        "repeat_at": {
+        "rep": {
           "oneOf": [
             {
               "type": "array",

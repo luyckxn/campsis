@@ -30,6 +30,29 @@ setClass(
 )
 
 #_______________________________________________________________________________
+#----                         dosing_schedule class                         ----
+#_______________________________________________________________________________
+
+#' 
+#' Dosing schedule class.
+#' 
+#' @export
+setClass(
+  "dosing_schedule",
+  representation(
+  ),
+  contains="repeated_schedule"
+)
+
+#' Dosing schedule constructor.
+#' 
+#' @return a dosing schedule (schedule repeated at dose times)
+#' @export
+DosingSchedule <- function() {
+  return(new("dosing_schedule"))
+}
+
+#_______________________________________________________________________________
 #----                         cyclic_schedule class                         ----
 #_______________________________________________________________________________
 

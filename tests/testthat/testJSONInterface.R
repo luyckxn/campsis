@@ -6,6 +6,7 @@ testFolder <-  file.path(getwd(), test_path())
 
 test_that("Import the JSON Campsis dataset", {
   
+  # 1A
   dataset1a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1a.json"))
   
   expArm1 <- Arm(subjects=100, label="Arm 1") %>%
@@ -20,6 +21,7 @@ test_that("Import the JSON Campsis dataset", {
   
   expect_equal(dataset1a, expDataset1a)
   
+  # 1B
   dataset1b <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1b.json"))
   expDataset1b <- Dataset() %>%
     add(expArm1) %>%
@@ -27,4 +29,13 @@ test_that("Import the JSON Campsis dataset", {
     add(Observations(TimeSequence(0, 168, by=1)))
   
   expect_equal(dataset1b, expDataset1b)
+  
+  # 1C
+  dataset1c <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1c.json"))
+  expDataset1c <- Dataset() %>%
+    add(expArm1) %>%
+    add(expArm2) %>%
+    add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
+  
+  expect_equal(dataset1c, expDataset1c)
 })

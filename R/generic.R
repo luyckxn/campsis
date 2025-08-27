@@ -114,14 +114,15 @@ setGeneric("getOccasions", function(object) {
 #' Get all distinct times for the specified object.
 #' 
 #' @param object any object
+#' @param ... extra arguments like `doseTimes` in observations or `unwrap` in treatment
 #' @return numeric vector with all unique times, sorted
 #' @export
 #' @rdname getTimes
-getTimes <- function(object) {
-  stop("No default function is provided")
+getTimes <- function(object, ...) {
+  stop(sprintf("No default function is provided for 'object': %s", class(object)))
 }
 
-setGeneric("getTimes", function(object) {
+setGeneric("getTimes", function(object, ...) {
   standardGeneric("getTimes")
 })
 

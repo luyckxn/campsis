@@ -21,7 +21,7 @@ setClass(
 #' @return a time vector
 #' @export
 TimeVector <- function(x) {
-  return(new("time_vector", x))
+  return(new("time_vector", base::sort(unique(x))))
 }
 
 #_______________________________________________________________________________
