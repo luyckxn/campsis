@@ -475,7 +475,7 @@ exportDelegate <- function(object, dest, model, arm_offset=NULL, offset_within_a
     treatment <- protocol@treatment %>%
       unwrapTreatment() %>%
       assignDoseNumber()
-    doseTimes <- getTimes(protocol@treatment, unwrap=FALSE)
+    doseTimes <- getTimes(treatment, unwrap=FALSE)
     
     if (treatment %>% length() > 0) {
       maxDoseNumber <- (treatment@list[[treatment %>% length()]])@dose_number
