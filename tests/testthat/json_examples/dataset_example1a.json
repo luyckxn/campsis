@@ -16,6 +16,17 @@
         ],
         "ii": 24.0,
         "addl": 6
+      },
+      {
+        "type": "infusion",
+        "time": 0.0,
+        "amount": 50.0,
+        "compartment": [
+          "CENTRAL"
+        ],
+        "ii": 24.0,
+        "addl": 6,
+        "duration": 2.0
       }
     ]
   },

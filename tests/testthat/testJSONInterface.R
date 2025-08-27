@@ -9,7 +9,8 @@ test_that("Import the JSON Campsis dataset", {
   dataset1a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1a.json"))
   
   expArm1 <- Arm(subjects=100, label="Arm 1") %>%
-    add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=6))
+    add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=6)) %>%
+    add(Infusion(time=0, amount=50, compartment="CENTRAL", ii=24, addl=6, duration=2))
   expArm2 <- Arm(subjects=100, label="Arm 2") %>%
     add(Bolus(time=0, amount=100, compartment="ABS", ii=24, addl=6))
   expDataset1a <- Dataset() %>%

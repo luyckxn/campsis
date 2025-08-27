@@ -40,7 +40,7 @@
       "type": "object",
       "properties": {
         "type": { "const": "arm_attributes" },
-        "subjects": { "type": "integer", "minimum": 1 },
+        "subjects": { "type": "integer", "minimum": 0 },
         "label": { "type": "string" }
       },
       "required": ["subjects", "label"],
@@ -67,7 +67,8 @@
         "amount": { "type": "number" },
         "compartment": { "type": "array", "items": {"type": "string"} },
         "ii": { "type": "number" },
-        "addl": { "type": "integer" }
+        "addl": { "type": "integer" },
+		"duration": { "type": "number" }
       },
       "required": ["time", "amount", "compartment"],
       "additionalProperties": false

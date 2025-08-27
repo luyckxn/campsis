@@ -5,6 +5,7 @@
 \alias{loadFromJSON}
 \alias{loadFromJSON,time_sequence,json_element-method}
 \alias{loadFromJSON,bolus_wrapper,json_element-method}
+\alias{loadFromJSON,infusion_wrapper,json_element-method}
 \alias{loadFromJSON,observations,json_element-method}
 \alias{loadFromJSON,dataset,json_element-method}
 \alias{loadFromJSON,dataset,character-method}
@@ -15,6 +16,8 @@ loadFromJSON(object, json)
 \S4method{loadFromJSON}{time_sequence,json_element}(object, json)
 
 \S4method{loadFromJSON}{bolus_wrapper,json_element}(object, json)
+
+\S4method{loadFromJSON}{infusion_wrapper,json_element}(object, json)
 
 \S4method{loadFromJSON}{observations,json_element}(object, json)
 
