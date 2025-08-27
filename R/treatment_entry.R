@@ -269,6 +269,7 @@ setMethod("loadFromJSON", signature=c("bolus_wrapper", "json_element"), definiti
 
 #' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("infusion_wrapper", "json_element"), definition=function(object, json) {
+  duration <- NULL
   if (!is.null(json@data$duration)) {
     duration <- json@data$duration
     json@data$duration <- NULL
