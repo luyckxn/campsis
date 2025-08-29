@@ -24,6 +24,24 @@ simulate <- function(model, dataset, dest=NULL, events=NULL, scenarios=NULL, tab
 }
 
 setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenarios=NULL, tablefun=NULL, outvars=NULL, outfun=NULL, seed=NULL, replicates=1, dosing=FALSE, settings=NULL) {
+
+  if (is.null(settings)) {
+    settings <- Settings()
+  }
+  defaultSettings <- settings@default
+  if (is.null(dest)) {
+    dest <- defaultSettings@engine
+  }
+  if (is.null(seed)) {
+    seed <- defaultSettings@seed
+  }
+  if (is.null(outvars)) {
+    outvars <- defaultSettings@outvars
+  }
+  if (is.null(dosing)) {
+    dosing <- defaultSettings@dosing
+  }
+
   dest <- preprocessDest(dest)
   events <- preprocessEvents(events)
   scenarios <- preprocessScenarios(scenarios)
@@ -32,9 +50,9 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   outfun <- preprocessOutfun(outfun)
   seed <- getSeed(seed)
   replicates <- preprocessReplicates(replicates, model)
-  settings <- preprocessSettings(settings, dest)
   dosing <- preprocessDosing(dosing)
-  
+  settings <- preprocessSettings(settings, dest)
+
   standardGeneric("simulate")
 })
 
