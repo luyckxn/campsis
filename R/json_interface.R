@@ -29,6 +29,9 @@ mapJSONPropertiesToSlot <- function(object, json) {
       if (isList) {
         value <- unlist(value)
       }
+      if (is.null(value)) {
+        value <- character(0)
+      }
     }
     slot(object, property) <- value
   }

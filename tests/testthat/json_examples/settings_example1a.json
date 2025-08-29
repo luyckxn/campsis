@@ -4,6 +4,6 @@
      "engine": "mrgsolve",
      "seed": 1,
      "disabled_variabilities": ["IIV"],
-     "outvars": ["CONC"]
+     "outvars": ["CONC", "CONC_ERR"]
   }
 ]

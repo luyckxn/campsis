@@ -42,8 +42,15 @@ test_that("Import Campsis dataset in JSON format", {
 
 test_that("Import Campsis settings in JSON format", {
   
-  settings <- loadFromJSON(Settings(), file.path(testFolder, "json_examples", "settings_example1.json"))
-  expSettings <- Settings(DefaultSettings(engine="mrgsolve", seed=1, outvars="CONC", disabled_variabilities="IIV"))
+  # 1A
+  settings1a <- loadFromJSON(Settings(), file.path(testFolder, "json_examples", "settings_example1a.json"))
+  expSettings1a <- Settings(DefaultSettings(engine="mrgsolve", seed=1, outvars=c("CONC", "CONC_ERR"), disabled_variabilities="IIV"))
   
-  expect_equal(settings, expSettings)
+  expect_equal(settings1a, expSettings1a)
+  
+  # 1B
+  settings1b <- loadFromJSON(Settings(), file.path(testFolder, "json_examples", "settings_example1b.json"))
+  expSettings1b <- Settings(DefaultSettings(engine="mrgsolve", seed=1, outvars=c("CONC", "CONC_ERR")))
+  
+  expect_equal(settings1b, expSettings1b)
 })

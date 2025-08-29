@@ -28,6 +28,8 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   if (is.null(settings)) {
     settings <- Settings()
   }
+
+  # Propagate default settings
   defaultSettings <- settings@default
   if (is.null(dest)) {
     dest <- defaultSettings@engine
@@ -324,11 +326,18 @@ simulateDelegate <- function(model, dataset, dest, events, scenarios, tablefun, 
   seqReplicates <- seq_len(replicates)
   seqReplicates <- as.list(seqReplicates) %>%
     stats::setNames(seqReplicates) # Names are added for furrr (added automatically to the output with .id="replicate")
-  
+
   allRep <- seqReplicates %>% furrr::future_map_dfr(.f=function(replicate) {
     # Export model for each replicate
     model_ <- replicatedModel %>%
       campsismod::export(dest=CampsisModel(), index=replicate)
+    
+    # Disable variabilities ('IIV', 'RUV', etc.)
+    disabledVariabilities <- settings@default@disabled_variabilities
+    if (length(disabledVariabilities) > 0) {
+      model_ <- model_ %>%
+        disable(disabledVariabilities)
+    }
     
     # Update replicate counter
     settings@internal@progress <- settings@internal@progress %>% updateReplicate(replicate)
@@ -545,7 +554,7 @@ setMethod("simulate", signature=c("campsis_model", "tbl_df", "rxode_engine", "ev
   summary <- settings@internal@dataset_summary
   
   # Retrieve simulation config
-  config <- processSimulateArguments(model=model, dataset=dataset, dest=dest, outvars=outvars, settings=settings)
+  config <- processSimulateArguments(model=model, dataset=dataset, dest=dest, outvars=outvars, dosing=dosing, settings=settings)
   progress <- settings@internal@progress
   progress@slices <- config$subdatasets %>% length()
 
