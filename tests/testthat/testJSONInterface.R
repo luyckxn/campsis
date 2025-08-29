@@ -4,7 +4,7 @@ context("Test the JSON interface")
 
 testFolder <-  file.path(getwd(), test_path())
 
-test_that("Import the JSON Campsis dataset", {
+test_that("Import Campsis dataset in JSON format", {
   
   # 1A
   dataset1a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1a.json"))
@@ -38,4 +38,12 @@ test_that("Import the JSON Campsis dataset", {
     add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
   
   expect_equal(dataset1c, expDataset1c)
+})
+
+test_that("Import Campsis settings in JSON format", {
+  
+  settings <- loadFromJSON(Settings(), file.path(testFolder, "json_examples", "settings_example1.json"))
+  expSettings <- Settings(DefaultSettings(engine="mrgsolve", seed=1, outvars="CONC", disabled_variabilities="IIV"))
+  
+  expect_equal(settings, expSettings)
 })

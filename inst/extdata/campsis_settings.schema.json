@@ -6,12 +6,30 @@
   "$ref": "#/$defs/settings",
   "$defs": {
     "settings": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/default_settings"
+          }
+        ]
+      }
+    },
+    "default_settings": {
       "type": "object",
       "properties": {
-        "engine": {
-          "enum": ["mrgsolve", "rxode2"]
+        "type": {
+          "const": "default_settings"
         },
-        "seed": { "type": "number" },
+        "engine": {
+          "enum": [
+            "mrgsolve",
+            "rxode2"
+          ]
+        },
+        "seed": {
+          "type": "integer"
+        },
         "outvars": {
           "type": "array",
           "items": {
@@ -21,11 +39,17 @@
         "disabled_variabilities": {
           "type": "array",
           "items": {
-            "enum": ["IIV", "RUV"]
+            "enum": [
+              "IIV",
+              "RUV"
+            ]
           }
         }
       },
-      "required": ["engine", "seed"],
+      "required": [
+        "engine",
+        "seed"
+      ],
       "additionalProperties": false
     }
   }
