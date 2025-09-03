@@ -28,7 +28,15 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   if (is.null(settings)) {
     settings <- Settings()
   }
-
+  
+  # Loading from JSON
+  if (is.character(dataset)) {
+    dataset <- loadFromJSON(Dataset(), dataset)
+  }
+  if (is.character(settings)) {
+    settings <- loadFromJSON(Settings(), settings)
+  }
+  
   # Propagate default settings
   defaultSettings <- settings@default
   if (is.null(dest)) {
@@ -43,7 +51,7 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   if (is.null(dosing)) {
     dosing <- defaultSettings@dosing
   }
-
+  
   dest <- preprocessDest(dest)
   events <- preprocessEvents(events)
   scenarios <- preprocessScenarios(scenarios)
@@ -55,7 +63,7 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   dosing <- preprocessDosing(dosing)
   settings <- preprocessSettings(settings, dest)
 
-  standardGeneric("simulate")
+  return(standardGeneric("simulate"))
 })
 
 #' Get simulation engine type.
