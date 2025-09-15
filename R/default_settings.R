@@ -43,7 +43,6 @@ DefaultSettings <- function(engine="rxode2", seed=NULL,
 #----                           loadFromJSON                                ----
 #_______________________________________________________________________________
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("default_settings", "json_element"), definition=function(object, json) {
   object <- mapJSONPropertiesToSlot(object, json)
   return(object)

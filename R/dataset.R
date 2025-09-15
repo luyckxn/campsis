@@ -194,13 +194,11 @@ setMethod("length", signature=c("dataset"), definition=function(x) {
 #----                           loadFromJSON                                ----
 #_______________________________________________________________________________
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("dataset", "json_element"), definition=function(object, json) {
   object <- jsonToCampsisDataset(object=object, json=json)
   return(object)
 })
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("dataset", "character"), definition=function(object, json) {
   schema <- system.file("extdata", "campsis.schema.json", package="campsis")
   return(loadFromJSON(object=object, json=openJSON(json=json, schema=schema)))

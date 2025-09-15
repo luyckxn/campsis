@@ -66,7 +66,6 @@ Collate:
     'utilities.R'
     'time_utilities.R'
     'check.R'
-    'json_element.R'
     'generic.R'
     'data.R'
     'seed.R'

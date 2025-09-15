@@ -107,7 +107,6 @@ setMethod("getTimes", signature = c("observations"), definition = function(objec
 #----                           loadFromJSON                                ----
 #_______________________________________________________________________________
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("observations", "json_element"), definition=function(object, json) {
   if (is.numeric(unlist(json@data$times))) {
     object@times <- TimeVector(unlist(json@data$times))

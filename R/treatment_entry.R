@@ -262,12 +262,11 @@ bolusInfFromJSON <- function(object, json) {
   object@ref <- processRefArg(NULL)
   return(object)
 }
-#' @rdname loadFromJSON
+
 setMethod("loadFromJSON", signature=c("bolus_wrapper", "json_element"), definition=function(object, json) {
   return(bolusInfFromJSON(object=object, json=json))
 })
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("infusion_wrapper", "json_element"), definition=function(object, json) {
   duration <- NULL
   if (!is.null(json@data$duration)) {

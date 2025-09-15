@@ -70,7 +70,6 @@ setMethod("as.numeric", signature=c("time_sequence"), definition=function(x) {
 #----                           loadFromJSON                                ----
 #_______________________________________________________________________________
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("time_sequence", "json_element"), definition=function(object, json) {
   object <- mapJSONPropertiesToSlot(object, json)
   return(object)

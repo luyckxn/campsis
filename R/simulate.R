@@ -30,6 +30,9 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   }
   
   # Loading from JSON
+  if (is.character(model)) {
+    model <- loadFromJSON(CampsisModel(), model)
+  }
   if (is.character(dataset)) {
     dataset <- loadFromJSON(Dataset(), dataset)
   }

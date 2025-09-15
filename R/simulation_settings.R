@@ -111,13 +111,11 @@ setMethod("add", signature = c("simulation_settings", "default_settings"), defin
 #----                           loadFromJSON                                ----
 #_______________________________________________________________________________
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("simulation_settings", "json_element"), definition=function(object, json) {
   object <- jsonToCampsisSettings(object, json)
   return(object)
 })
 
-#' @rdname loadFromJSON
 setMethod("loadFromJSON", signature=c("simulation_settings", "character"), definition=function(object, json) {
   schema <- system.file("extdata", "campsis_settings.schema.json", package="campsis")
   return(loadFromJSON(object=object, json=openJSON(json=json, schema=schema)))
