@@ -55,7 +55,7 @@ test_that(getTestName("Simulate scenarios - make few changes on model"), {
   scenarios <- Scenarios() %>% 
     add(Scenario("THETA_KA=1", model=~.x %>% replace(Theta(name="KA", value=1)))) %>%
     add(Scenario("THETA_KA=3", model=~.x %>% replace(Theta(name="KA", value=3)))) %>%
-    add(Scenario("THETA_KA=6", model=~.x %>% replace(Theta(name="KA", value=6))))
+    add(Scenario("THETA_KA=6") %>% add(ReplaceAction(Theta(name="KA", value=6))))
   
   # Running scenarios sequentially with only 1 CPU
   setupPlanSequential()

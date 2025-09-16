@@ -125,13 +125,20 @@ applyScenario <- function(x, scenario) {
   } else {
     stop("x must be either a CAMPSIS model or dataset")
   }
-  
+
   if (is.function(x_)) {
-    return(x_(x))
+    retValue <- x_(x) 
   } else if (rlang::is_formula(x_)) {
     x_ <- rlang::as_function(x_)
-    return(x_(x))
+    retValue <- x_(x)
   } else {
-    return(x_)
+    retValue <- x_
   }
+  
+  for (action in scenario@actions@list) {
+    retValue <- retValue %>%
+      applyAction(action=action)
+  }
+  
+  return(retValue)
 }

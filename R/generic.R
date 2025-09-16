@@ -1,3 +1,20 @@
+#_______________________________________________________________________________
+#----                            applyAction                                ----
+#_______________________________________________________________________________
+
+#' Apply some action on the given object.
+#' 
+#' @param object any object
+#' @return updated object
+#' @export
+#' @rdname applyAction
+applyAction <- function(object, action) {
+  stop("No default function is provided")
+}
+
+setGeneric("applyAction", function(object, action) {
+  standardGeneric("applyAction")
+})
 
 #_______________________________________________________________________________
 #----                           getCovariates                               ----

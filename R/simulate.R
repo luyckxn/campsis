@@ -39,6 +39,9 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   if (is.character(settings)) {
     settings <- loadFromJSON(Settings(), settings)
   }
+  if (is.character(scenarios)) {
+    scenarios <- loadFromJSON(Scenarios(), scenarios)
+  }
   
   # Propagate default settings
   defaultSettings <- settings@default

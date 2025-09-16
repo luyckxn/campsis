@@ -57,3 +57,21 @@ setMethod("loadFromJSON", signature=c("replace_action", "json_element"), definit
   }
   return(object)
 })
+
+#_______________________________________________________________________________
+#----                            applyAction                                ----
+#_______________________________________________________________________________
+
+setMethod("applyAction", signature=c("campsis_model", "replace_action"), definition=function(object, action) {
+  replacementObject <- action@object
+  if (is(replacementObject, "parameter")) {
+    object <- object %>%
+      campsismod::replace(replacementObject)
+  }
+  return(object)
+})
+
+setMethod("applyAction", signature=c("dataset", "replace_action"), definition=function(object, action) {
+  # Nothing to do yet
+  return(object)
+})
