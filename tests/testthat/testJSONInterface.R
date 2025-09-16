@@ -54,3 +54,16 @@ test_that("Import Campsis settings in JSON format", {
   
   expect_equal(settings1b, expSettings1b)
 })
+
+test_that("Import Campsis scenarios in JSON format", {
+  
+  # 1A
+  scenarios1a <- loadFromJSON(Scenarios(), file.path(testFolder, "json_examples", "scenarios_example1a.json"))
+  
+  expScenarios1a <- Scenarios() %>%
+    add(Scenario(name="Base scenario")) %>%
+    add(Scenario(name="Slow KA") %>%
+          add(ReplaceAction(Theta(name="KA", value=0.3, label="Absorption rate", unit="1/h"))))
+  
+  expect_equal(scenarios1a, expScenarios1a)
+})

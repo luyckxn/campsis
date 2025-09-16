@@ -21,8 +21,9 @@ setClass(
   "scenario",
   representation(
     name = "character",
-    model = "ANY",
-    dataset = "ANY"
+    model = "ANY", # To deprecate
+    dataset = "ANY", # To deprecate
+    actions = "scenario_actions"
   ),
   contains="pmx_element",
   validity=checkScenario
@@ -72,11 +73,32 @@ expectAppropriateDatasetArg <- function(dataset) {
 }
 
 #_______________________________________________________________________________
+#----                              add                                      ----
+#_______________________________________________________________________________
+
+
+setMethod("add", signature = c("scenario", "scenario_action"), definition = function(object, x) {
+  object@actions <- object@actions %>% add(x)
+  return(object)
+})
+
+#_______________________________________________________________________________
 #----                           getName                                     ----
 #_______________________________________________________________________________
 
 setMethod("getName", signature = c("scenario"), definition = function(x) {
   return(paste0("SCENARIO (", x@name, ")"))
+})
+
+#_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+setMethod("loadFromJSON", signature=c("scenario", "json_element"), definition=function(object, json) {
+  jsonScenario <- json@data
+  scenario <- Scenario(name=jsonScenario$name)
+  scenario@actions <- loadFromJSON(new("scenario_actions"), JSONElement(jsonScenario$actions)) 
+  return(scenario)
 })
 
 #_______________________________________________________________________________

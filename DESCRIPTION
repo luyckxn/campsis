@@ -92,6 +92,8 @@ Collate:
     'arms.R'
     'event.R'
     'events.R'
+    'scenario_action.R'
+    'scenario_actions.R'
     'scenario.R'
     'scenarios.R'
     'simulation_engine.R'
