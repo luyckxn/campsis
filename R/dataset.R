@@ -370,7 +370,10 @@ applyCompartmentCharacteristics <- function(table, properties) {
 #' @importFrom dplyr all_of
 setMethod("export", signature=c("dataset", "character"), definition=function(object, dest, seed=NULL, model=NULL, settings=NULL, event_related_column=FALSE) {
   destinationEngine <- getSimulationEngineType(dest)
-  settings <- preprocessSettings(settings, dest) # In case of NULL settings
+  if (is.null(settings)) {
+    settings <- Settings()
+  }
+  settings <- preprocessSettings(settings, dest)
   table <- object %>% export(dest=destinationEngine, seed=seed, model=model, settings=settings)
   if (!event_related_column) {
     table <- table %>% dplyr::select(-dplyr::all_of("EVENT_RELATED"))
