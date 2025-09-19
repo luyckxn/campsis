@@ -255,7 +255,7 @@ processRefArg <- function(ref) {
 #_______________________________________________________________________________
 
 bolusInfFromJSON <- function(object, json) {
-  object <- mapJSONPropertiesToSlot(object, json)
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
   object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
   object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
   object@lag <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))

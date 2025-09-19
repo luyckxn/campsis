@@ -71,6 +71,6 @@ setMethod("as.numeric", signature=c("time_sequence"), definition=function(x) {
 #_______________________________________________________________________________
 
 setMethod("loadFromJSON", signature=c("time_sequence", "json_element"), definition=function(object, json) {
-  object <- mapJSONPropertiesToSlot(object, json)
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
   return(object)
 })

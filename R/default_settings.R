@@ -44,7 +44,7 @@ DefaultSettings <- function(engine="rxode2", seed=NULL,
 #_______________________________________________________________________________
 
 setMethod("loadFromJSON", signature=c("default_settings", "json_element"), definition=function(object, json) {
-  object <- mapJSONPropertiesToSlot(object, json)
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
   return(object)
 })
 

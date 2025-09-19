@@ -13,31 +13,6 @@ toCampsisElement <- function(json) {
   return(object)
 }
 
-mapJSONPropertiesToSlot <- function(object, json) {
-  json <- json@data
-  properties <- names(json)
-  properties <- properties[properties != "type"]
-  
-  for (property in properties) {
-    value <- json[[property]]
-    isList <- is.list(value)
-    
-    if (isList && !is.null(value$type)) {
-      # Recursion
-      value <- mapJSONPropertiesToSlot(object=new(value$type), json=JSONElement(value))
-    } else {
-      if (isList) {
-        value <- unlist(value)
-      }
-      if (is.null(value)) {
-        value <- character(0)
-      }
-    }
-    slot(object, property) <- value
-  }
-  return(object)
-}
-
 #' JSON to Campsis dataset.
 #' 
 #' @param object empty dataset

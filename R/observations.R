@@ -112,7 +112,7 @@ setMethod("loadFromJSON", signature=c("observations", "json_element"), definitio
     object@times <- TimeVector(unlist(json@data$times))
     json@data$times <- NULL
   }
-  object <- mapJSONPropertiesToSlot(object, json)
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
   return(object)
 })
 
