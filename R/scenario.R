@@ -14,8 +14,9 @@ checkScenario <- function(object) {
 #' Scenario class.
 #' 
 #' @slot name scenario name, single character string
-#' @slot model either a CAMPSIS model, a function or lambda-style formula
-#' @slot dataset either a CAMPSIS dataset, a function or lambda-style formula
+#' @slot model either a Campsis model, a function or lambda-style formula
+#' @slot dataset either a Campsis dataset, a function or lambda-style formula
+#' @slot actions list of actions to apply
 #' @export
 setClass(
   "scenario",
@@ -33,8 +34,8 @@ setClass(
 #' Create an scenario.
 #' 
 #' @param name scenario name, single character string
-#' @param model either a CAMPSIS model, a function or lambda-style formula
-#' @param dataset either a CAMPSIS dataset, a function or lambda-style formula
+#' @param model either a Campsis model, a function or lambda-style formula
+#' @param dataset either a Campsis dataset, a function or lambda-style formula
 #' @return a new scenario
 #' @export
 Scenario <- function(name=NULL, model=NULL, dataset=NULL) {

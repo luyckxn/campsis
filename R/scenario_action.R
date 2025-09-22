@@ -62,6 +62,7 @@ setMethod("loadFromJSON", signature=c("replace_action", "json_element"), definit
 #----                            applyAction                                ----
 #_______________________________________________________________________________
 
+#' @rdname applyAction
 setMethod("applyAction", signature=c("campsis_model", "replace_action"), definition=function(object, action) {
   replacementObject <- action@object
   if (is(replacementObject, "parameter")) {
@@ -71,6 +72,7 @@ setMethod("applyAction", signature=c("campsis_model", "replace_action"), definit
   return(object)
 })
 
+#' @rdname applyAction
 setMethod("applyAction", signature=c("dataset", "replace_action"), definition=function(object, action) {
   # Nothing to do yet
   return(object)

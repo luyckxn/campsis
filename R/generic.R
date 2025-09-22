@@ -5,6 +5,7 @@
 #' Apply some action on the given object.
 #' 
 #' @param object any object
+#' @param action action to apply
 #' @return updated object
 #' @export
 #' @rdname applyAction
