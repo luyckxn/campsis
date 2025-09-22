@@ -90,6 +90,7 @@ EventRelatedObservations <- function(times, compartment=NA) {
 #----                             getTimes                                  ----
 #_______________________________________________________________________________
 
+#' @param doseTimes times of the doses, only needed if a [DosingSchedule()] is referred to
 #' @rdname getTimes
 setMethod("getTimes", signature = c("observations"), definition = function(object, doseTimes=NULL) {
   times <- as.numeric(object@times)

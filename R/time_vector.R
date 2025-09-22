@@ -58,10 +58,20 @@ TimeSequence <- function(start, end, by) {
 #----                            as.numeric                                 ----
 #_______________________________________________________________________________
 
+#' Time vector to numeric vector.
+#'
+#' @param x time vector object
+#' @return a numeric vector
+#' 
 setMethod("as.numeric", signature=c("time_vector"), definition=function(x) {
   return(base::sort(unique(x)))
 })
 
+#' Time sequence to numeric vector.
+#'
+#' @param x time sequence object
+#' @return a numeric vector
+#' 
 setMethod("as.numeric", signature=c("time_sequence"), definition=function(x) {
   return(seq(from=x@start, to=x@end, by=x@by))
 })

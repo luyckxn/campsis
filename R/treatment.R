@@ -143,6 +143,7 @@ setMethod("assignDoseNumber", signature = c("treatment"), definition = function(
 #----                             getTimes                                  ----
 #_______________________________________________________________________________
 
+#' @param unwrap unwrap treatment before accessing the times, default value is TRUE
 #' @rdname getTimes
 setMethod("getTimes", signature = c("treatment"), definition = function(object, unwrap=TRUE) {
   if (unwrap) {

@@ -18,6 +18,7 @@ setClass(
 #----                             getTimes                                  ----
 #_______________________________________________________________________________
 
+#' @param doseTimes times of the doses, only needed if a [DosingSchedule()] is referred to
 #' @rdname getTimes
 setMethod("getTimes", signature = c("observations_set"), definition = function(object, doseTimes=NULL) {
   times <- object@list %>%

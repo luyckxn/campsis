@@ -32,6 +32,10 @@ getTimes(object, ...)
 \item{object}{any object}
 
 \item{...}{extra arguments like `doseTimes` in observations or `unwrap` in treatment}
+
+\item{unwrap}{unwrap treatment before accessing the times, default value is TRUE}
+
+\item{doseTimes}{times of the doses, only needed if a [DosingSchedule()] is referred to}
 }
 \value{
 numeric vector with all unique times, sorted
