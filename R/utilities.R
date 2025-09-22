@@ -105,6 +105,7 @@ getCampsisOptions <- function() {
 #' @param name option to search
 #' @param default default value if option not found
 #' @return option value
+#' @export
 getCampsisOption <- function(name, default) {
   option <- getCampsisOptions()
   if (is.null(option)) {
