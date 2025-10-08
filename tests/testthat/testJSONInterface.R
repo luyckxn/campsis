@@ -38,6 +38,17 @@ test_that("Import Campsis dataset in JSON format", {
     add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
   
   expect_equal(dataset1c, expDataset1c)
+  
+  # Example 2: dataset settings
+  dataset2 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example2.json"))
+  expArm2 <- Arm(subjects=100, label="My dataset") %>%
+    add(Bolus(time=0, amount=100, compartment="ABS", ii=24, addl=6)) %>%
+    add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
+  expDataset2 <- Dataset() %>%
+    add(expArm2) %>%
+    add(DatasetConfig(exportTSLD=TRUE, exportTDOS=TRUE))
+
+  expect_equal(dataset2, expDataset2)
 })
 
 test_that("Import Campsis settings in JSON format", {

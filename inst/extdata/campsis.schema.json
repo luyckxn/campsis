@@ -9,121 +9,250 @@
       "type": "array",
       "items": {
         "oneOf": [
-          { "$ref": "#/$defs/arm" },
-          { "$ref": "#/$defs/arm_attributes" },
-          { "$ref": "#/$defs/bolus" },
-          { "$ref": "#/$defs/infusion" },
-		  { "$ref": "#/$defs/observations" }
+          {
+            "$ref": "#/$defs/arm"
+          },
+          {
+            "$ref": "#/$defs/dataset_config"
+          }
         ]
       }
     },
     "arm": {
       "type": "object",
       "properties": {
-        "type": { "const": "arm" },
+        "type": {
+          "const": "arm"
+        },
         "list": {
           "type": "array",
           "items": {
             "oneOf": [
-              { "$ref": "#/$defs/arm_attributes" },
-              { "$ref": "#/$defs/bolus" },
-              { "$ref": "#/$defs/infusion" },
-			  { "$ref": "#/$defs/observations" }
+              {
+                "$ref": "#/$defs/arm_attributes"
+              },
+              {
+                "$ref": "#/$defs/bolus"
+              },
+              {
+                "$ref": "#/$defs/infusion"
+              },
+              {
+                "$ref": "#/$defs/observations"
+              }
             ]
           }
         }
       },
-      "required": ["list"],
+      "required": [
+        "list"
+      ],
       "additionalProperties": false
     },
     "arm_attributes": {
       "type": "object",
       "properties": {
-        "type": { "const": "arm_attributes" },
-        "subjects": { "type": "integer", "minimum": 0 },
-        "label": { "type": "string" }
+        "type": {
+          "const": "arm_attributes"
+        },
+        "subjects": {
+          "type": "integer",
+          "description": "Number of subjects in the arm",
+          "minimum": 0
+        },
+        "label": {
+          "type": "string",
+          "description": "Arm label"
+        }
       },
-      "required": ["subjects", "label"],
+      "required": [
+        "subjects",
+        "label"
+      ],
       "additionalProperties": false
     },
     "bolus": {
       "type": "object",
       "properties": {
-        "type": { "const": "bolus" },
-        "time": { "type": "number" },
-        "amount": { "type": "number" },
-        "compartment": { "type": "array", "items": {"type": "string"} },
-        "ii": { "type": "number" },
-        "addl": { "type": "integer" }
+        "type": {
+          "const": "bolus"
+        },
+        "time": {
+          "type": "number",
+          "description": "Time at which the bolus is given"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Dose amount"
+        },
+        "compartment": {
+          "type": "array",
+          "description": "Compartment where the dose is given. The dose can be given into multiple compartments at once.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ii": {
+          "type": "number",
+          "description": "Inter-dose interval"
+        },
+        "addl": {
+          "type": "integer",
+          "description": "Number of additional doses"
+        }
       },
-      "required": ["time", "amount", "compartment"],
+      "required": [
+        "time",
+        "amount",
+        "compartment"
+      ],
       "additionalProperties": false
     },
     "infusion": {
       "type": "object",
       "properties": {
-        "type": { "const": "infusion" },
-        "time": { "type": "number" },
-        "amount": { "type": "number" },
-        "compartment": { "type": "array", "items": {"type": "string"} },
-        "ii": { "type": "number" },
-        "addl": { "type": "integer" },
-		"duration": { "type": "number" }
+        "type": {
+          "const": "infusion"
+        },
+        "time": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "compartment": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ii": {
+          "type": "number"
+        },
+        "addl": {
+          "type": "integer"
+        },
+        "duration": {
+          "type": "number"
+        }
       },
-      "required": ["time", "amount", "compartment"],
+      "required": [
+        "time",
+        "amount",
+        "compartment"
+      ],
       "additionalProperties": false
     },
-	"observations": {
+    "observations": {
       "type": "object",
       "properties": {
-		"type": { "const": "observations" },
+        "type": {
+          "const": "observations"
+        },
         "times": {
           "oneOf": [
             {
               "type": "array",
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             },
-            { "$ref": "#/$defs/time_sequence" }
+            {
+              "$ref": "#/$defs/time_sequence"
+            }
           ]
         },
         "rep": {
           "oneOf": [
             {
               "type": "array",
-              "items": { "type": "number" }
+              "items": {
+                "type": "number"
+              }
             },
-            { "$ref": "#/$defs/dosing_schedule" }
+            {
+              "$ref": "#/$defs/dosing_schedule"
+            }
           ]
         }
       },
-      "required": ["times"],
+      "required": [
+        "times"
+      ],
       "additionalProperties": false
     },
     "time_sequence": {
       "type": "object",
       "properties": {
-        "type": { "const": "time_sequence" },
-        "start": { "type": "number" },
-        "end": { "type": "number" },
-        "by": { "type": "number" }
+        "type": {
+          "const": "time_sequence"
+        },
+        "start": {
+          "type": "number",
+          "description": "Start time"
+        },
+        "end": {
+          "type": "number",
+          "description": "End time (this time may not be included in the final sequence depending on the chosen step)"
+        },
+        "by": {
+          "type": "number",
+          "description": "Step between two consecutive times"
+        }
       },
-      "required": ["start", "end"]
+      "required": [
+        "start",
+        "end"
+      ]
     },
     "dosing_schedule": {
       "type": "object",
       "properties": {
-        "type": { "const": "dosing_schedule" }
+        "type": {
+          "const": "dosing_schedule"
+        }
       },
       "required": []
     },
     "cyclic_schedule": {
       "type": "object",
       "properties": {
-        "type": { "const": "cyclic_schedule" },
-        "duration": { "type": "number" },
-        "repetitions": { "type": "integer" }
+        "type": {
+          "const": "cyclic_schedule"
+        },
+        "duration": {
+          "type": "number",
+          "description": "Duration of the cyclic period"
+        },
+        "repetitions": {
+          "type": "integer",
+          "description": "Number of additional cyclic periods"
+        }
       },
-      "required": ["duration", "repetitions"]
+      "required": [
+        "duration",
+        "repetitions"
+      ]
+    },
+    "dataset_config": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "dataset_config"
+        },
+        "export_tsld": {
+          "type": "boolean",
+          "description": "Export variable TSLD (time since last dose) in the dataset for rxode2 / mrgsolve"
+        },
+        "export_tdos": {
+          "type": "boolean",
+          "description": "Export variable TDOS (time of current dose) in the dataset for rxode2 / mrgsolve"
+        }
+      },
+      "required": [
+        "export_tsld",
+        "export_tdos"
+      ]
     }
   }
 }

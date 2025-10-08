@@ -29,9 +29,6 @@ jsonToCampsisDataset <- function(object, json) {
     return(dataset)
   }
   
-  datasetAttributes <- json %>%
-    purrr::detect(~.x$type=="arm_attributes")
-  
   arms <- json %>%
     purrr::keep(~.x$type=="arm")
   
@@ -58,18 +55,12 @@ jsonToCampsisDataset <- function(object, json) {
   
   # Iteration over elements in dataset
   datasetElems <- json %>%
-    purrr::keep(~!(.x$type %in% c("arm", "arm_attributes")))
+    purrr::keep(~!(.x$type %in% c("arm")))
   
   for (x in datasetElems) {
     elem <- toCampsisElement(x)
     dataset <- dataset %>%
       campsismod::add(elem)
-  }
-  
-  if (!is.null(datasetAttributes)) {
-    dataset <- dataset %>%
-      setSubjects(datasetAttributes$subjects) %>%
-      setLabel(datasetAttributes$label)
   }
   
   return(dataset)
