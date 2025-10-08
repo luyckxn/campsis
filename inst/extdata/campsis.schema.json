@@ -260,10 +260,141 @@
     "distribution": {
       "title": "Base distribution",
       "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "constant_distribution": {
+      "title": "Constant distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
       "properties": {
+        "type": {
+          "const": "constant_distribution"
+        },
+        "value": {
+          "type": "number",
+          "description": "Constant value"
+        }
       },
       "required": [
-      ]
+        "type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "fixed_distribution": {
+      "title": "Fixed distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fixed_distribution"
+        },
+        "values": {
+          "type": "array",
+          "description": "Array of constant values (1 per individual)",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "values"
+      ],
+      "additionalProperties": false
+    },
+    "uniform_distribution": {
+      "title": "Uniform distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "uniform_distribution"
+        },
+        "min": {
+          "type": "number",
+          "description": "Lower limit of the uniform distribution"
+        },
+        "max": {
+          "type": "number",
+          "description": "Upper limit of the uniform distribution"
+        }
+      },
+      "required": [
+        "type",
+        "min",
+        "max"
+      ],
+      "additionalProperties": false
+    },
+    "normal_distribution": {
+      "title": "Normal distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "normal_distribution"
+        },
+        "mean": {
+          "type": "number",
+          "description": "Mean value of the normal distribution"
+        },
+        "sd": {
+          "type": "number",
+          "description": "Standard deviation of the normal distribution"
+        }
+      },
+      "required": [
+        "type",
+        "mean",
+        "sd"
+      ],
+      "additionalProperties": false
+    },
+    "lognormal_distribution": {
+      "title": "Lognormal distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "lognormal_distribution"
+        },
+        "meanlog": {
+          "type": "number",
+          "description": "Mean value of the lognormal distribution in the log domain"
+        },
+        "sdlog": {
+          "type": "number",
+          "description": "Standard deviation of the lognormal distribution in the log domain"
+        }
+      },
+      "required": [
+        "type",
+        "meanlog",
+        "sdlog"
+      ],
+      "additionalProperties": false
     },
     "covariate": {
       "title": "Model covariate",
@@ -274,127 +405,31 @@
           "description": "Name of the covariate"
         },
         "distribution": {
-          "$ref": "#/$defs/distribution"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/constant_distribution"
+            },
+            {
+              "$ref": "#/$defs/fixed_distribution"
+            },
+            {
+              "$ref": "#/$defs/uniform_distribution"
+            },
+            {
+              "$ref": "#/$defs/normal_distribution"
+            },
+            {
+              "$ref": "#/$defs/lognormal_distribution"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type"
+          }
         }
       },
       "required": [
         "name",
         "distribution"
-      ]
-    },
-    "constant_distribution": {
-      "title": "Constant distribution",
-      "allOf": [
-        {
-          "$ref": "#/$defs/distribution"
-        },
-        {
-          "properties": {
-            "type": {
-              "const": "constant_distribution"
-            },
-            "value": {
-              "type": "number",
-              "description": "Constant value"
-            }
-          }
-        }
-      ]
-    },
-    "fixed_distribution": {
-      "title": "Fixed distribution",
-      "allOf": [
-        {
-          "$ref": "#/$defs/distribution"
-        },
-        {
-          "properties": {
-            "type": {
-              "const": "fixed_distribution"
-            },
-            "values": {
-              "type": "array",
-              "description": "Array of constant values (1 per individual)",
-              "items": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      ]
-    },
-    "uniform_distribution": {
-      "title": "Uniform distribution",
-      "allOf": [
-        {
-          "$ref": "#/$defs/distribution"
-        },
-        {
-          "properties": {
-            "type": {
-              "const": "uniform_distribution"
-            },
-            "min": {
-              "type": "number",
-              "description": "Lower limit of the uniform distribution"
-            },
-            "max": {
-              "type": "number",
-              "description": "Upper limit of the uniform distribution"
-            }
-          }
-        }
-      ]
-    },
-    "normal_distribution": {
-      "title": "Normal distribution",
-      "allOf": [
-        {
-          "$ref": "#/$defs/distribution"
-        },
-        {
-          "properties": {
-            "type": {
-              "const": "normal_distribution"
-            },
-            "mean": {
-              "type": "number",
-              "description": "Mean value of the normal distribution"
-            },
-            "sd": {
-              "type": "number",
-              "description": "Standard deviation of the normal distribution"
-            }
-          }
-        }
-      ]
-    },
-    "lognormal_distribution": {
-      "title": "Lognormal distribution",
-      "allOf": [
-        {
-          "$ref": "#/$defs/distribution"
-        },
-        {
-          "properties": {
-            "type": {
-              "const": "lognormal_distribution"
-            },
-            "meanlog": {
-              "type": "number",
-              "description": "Mean value of the lognormal distribution in the log domain"
-            },
-            "sdlog": {
-              "type": "number",
-              "description": "Standard deviation of the lognormal distribution in the log domain"
-            }
-          },
-          "required": [
-            "meanlog",
-            "sdlog"
-          ],
-          "additionalProperties": false
-        }
       ]
     }
   }
