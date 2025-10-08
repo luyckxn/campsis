@@ -7,6 +7,9 @@ toCampsisElement <- function(json) {
       type <- paste0(type, "_wrapper")
     }  
   }
+  if (type=="covariate") {
+    type <- paste0("fixed_", type)
+  }
   
   object <- new(type)
   object <- loadFromJSON(object, JSONElement(json))

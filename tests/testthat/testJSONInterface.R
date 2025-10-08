@@ -49,6 +49,18 @@ test_that("Import Campsis dataset in JSON format", {
     add(DatasetConfig(exportTSLD=TRUE, exportTDOS=TRUE))
 
   expect_equal(dataset2, expDataset2)
+  
+  # Example 3: dataset covariates
+  dataset3 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example3_covariates.json"))
+  expArm3 <- Arm(subjects=100, label="My dataset") %>%
+    add(Observations(TimeSequence(0, 24, by=1))) %>%
+    add(Covariate("BW1", 70.5)) %>%
+    add(Covariate("BW2", c(70.5, 80.5, 90.5))) %>%
+    add(Covariate("BW3", NormalDistribution(70.5, 10.5)))
+  expDataset3 <- Dataset() %>%
+    add(expArm3)
+  
+  expect_equal(dataset3, expDataset3)
 })
 
 test_that("Import Campsis settings in JSON format", {

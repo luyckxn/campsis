@@ -39,6 +39,9 @@
               },
               {
                 "$ref": "#/$defs/observations"
+              },
+              {
+                "$ref": "#/$defs/covariate"
               }
             ]
           }
@@ -252,6 +255,95 @@
       "required": [
         "export_tsld",
         "export_tdos"
+      ]
+    },
+    "distribution": {
+      "title": "Base distribution",
+      "type": "object",
+      "properties": {
+      },
+      "required": [
+      ]
+    },
+    "covariate": {
+      "title": "Model covariate",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the covariate"
+        },
+        "distribution": {
+          "$ref": "#/$defs/distribution"
+        }
+      },
+      "required": [
+        "name",
+        "distribution"
+      ]
+    },
+    "constant_distribution": {
+      "title": "Constant distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "constant_distribution"
+            },
+            "value": {
+              "type": "number",
+              "description": "Constant value"
+            }
+          }
+        }
+      ]
+    },
+    "fixed_distribution": {
+      "title": "Fixed distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "fixed_distribution"
+            },
+            "values": {
+              "type": "array",
+              "description": "Array of constant values (1 per individual)",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "normal_distribution": {
+      "title": "Normal distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "normal_distribution"
+            },
+            "mean": {
+              "type": "number",
+              "description": "Mean value of the normal distribution"
+            },
+            "sd": {
+              "type": "number",
+              "description": "Standard deviation of the normal distribution"
+            }
+          }
+        }
       ]
     }
   }

@@ -172,6 +172,22 @@ UniformDistribution <- function(min, max) {
   return(new("function_distribution", fun="runif", args=list(min=as.numeric(min), max=as.numeric(max))))
 }
 
+#_______________________________________________________________________________
+#----                     normal_distribution class                         ----
+#_______________________________________________________________________________
+
+
+#' 
+#' Normal distribution class.
+#' 
+#' @export
+setClass(
+  "normal_distribution",
+  representation(
+  ),
+  contains="function_distribution"
+)
+
 #'
 #' Create a normal distribution.
 #'
@@ -182,8 +198,9 @@ UniformDistribution <- function(min, max) {
 NormalDistribution <- function(mean, sd) {
   expectSingleNumericValue(mean, "mean")
   expectSingleNumericValue(sd, "sd")
-  return(new("function_distribution", fun="rnorm", args=list(mean=as.numeric(mean), sd=as.numeric(sd))))
+  return(new("normal_distribution", fun="rnorm", args=list(mean=as.numeric(mean), sd=as.numeric(sd))))
 }
+
 
 #'
 #' Create a log normal distribution.
@@ -434,4 +451,21 @@ setMethod("sample", signature = c("bootstrap_distribution", "integer"), definiti
   return(object)
 })
 
+#_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
 
+setMethod("loadFromJSON", signature=c("constant_distribution", "json_element"), definition=function(object, json) {
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
+  return(object)
+})
+
+setMethod("loadFromJSON", signature=c("fixed_distribution", "json_element"), definition=function(object, json) {
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
+  return(object)
+})
+
+setMethod("loadFromJSON", signature=c("normal_distribution", "json_element"), definition=function(object, json) {
+  object <- NormalDistribution(mean=json@data$mean, sd=json@data$sd)
+  return(object)
+})
