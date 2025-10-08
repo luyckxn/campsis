@@ -323,6 +323,29 @@
         }
       ]
     },
+    "uniform_distribution": {
+      "title": "Uniform distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "uniform_distribution"
+            },
+            "min": {
+              "type": "number",
+              "description": "Lower limit of the uniform distribution"
+            },
+            "max": {
+              "type": "number",
+              "description": "Upper limit of the uniform distribution"
+            }
+          }
+        }
+      ]
+    },
     "normal_distribution": {
       "title": "Normal distribution",
       "allOf": [
@@ -343,6 +366,34 @@
               "description": "Standard deviation of the normal distribution"
             }
           }
+        }
+      ]
+    },
+    "lognormal_distribution": {
+      "title": "Lognormal distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "lognormal_distribution"
+            },
+            "meanlog": {
+              "type": "number",
+              "description": "Mean value of the lognormal distribution in the log domain"
+            },
+            "sdlog": {
+              "type": "number",
+              "description": "Standard deviation of the lognormal distribution in the log domain"
+            }
+          },
+          "required": [
+            "meanlog",
+            "sdlog"
+          ],
+          "additionalProperties": false
         }
       ]
     }

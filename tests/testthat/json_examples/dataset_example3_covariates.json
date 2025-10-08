@@ -40,6 +40,24 @@
           "mean": 70.5,
           "sd": 10.5
         }
+      },
+      {
+        "type": "covariate",
+        "name": "BW4",
+        "distribution": {
+          "type": "uniform_distribution",
+          "min": 50.0,
+          "max": 100.0
+        }
+      },
+      {
+        "type": "covariate",
+        "name": "BW5",
+        "distribution": {
+          "type": "lognormal_distribution",
+          "meanlog": 4.5,
+          "sdlog": 2.3
+        }
       }
     ]
   }

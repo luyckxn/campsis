@@ -159,6 +159,21 @@ FunctionDistribution <- function(fun, args) {
   return(new("function_distribution", fun=fun, args=args))
 }
 
+#_______________________________________________________________________________
+#----                      uniform_distribution class                       ----
+#_______________________________________________________________________________
+
+#' 
+#' Uniform distribution class.
+#' 
+#' @export
+setClass(
+  "uniform_distribution",
+  representation(
+  ),
+  contains="function_distribution"
+)
+
 #'
 #' Create an uniform distribution.
 #'
@@ -175,7 +190,6 @@ UniformDistribution <- function(min, max) {
 #_______________________________________________________________________________
 #----                     normal_distribution class                         ----
 #_______________________________________________________________________________
-
 
 #' 
 #' Normal distribution class.
@@ -201,6 +215,21 @@ NormalDistribution <- function(mean, sd) {
   return(new("normal_distribution", fun="rnorm", args=list(mean=as.numeric(mean), sd=as.numeric(sd))))
 }
 
+#_______________________________________________________________________________
+#----                    lognormal_distribution class                       ----
+#_______________________________________________________________________________
+
+#' 
+#' Log normal distribution class.
+#' 
+#' @export
+setClass(
+  "lognormal_distribution",
+  representation(
+  ),
+  contains="function_distribution"
+)
+
 
 #'
 #' Create a log normal distribution.
@@ -214,6 +243,21 @@ LogNormalDistribution <- function(meanlog, sdlog) {
   expectSingleNumericValue(sdlog, "sdlog")
   return(new("function_distribution", fun="rlnorm", args=list(meanlog=as.numeric(meanlog), sdlog=as.numeric(sdlog))))
 }
+
+#_______________________________________________________________________________
+#----                     discrete_distribution class                       ----
+#_______________________________________________________________________________
+
+#' 
+#' Discrete distribution class.
+#' 
+#' @export
+setClass(
+  "discrete_distribution",
+  representation(
+  ),
+  contains="function_distribution"
+)
 
 #'
 #' Discrete distribution.
@@ -229,6 +273,21 @@ DiscreteDistribution <- function(x, prob, replace=TRUE) {
   assertthat::assert_that(length(x)==length(prob), msg="x and prob must have the same length")
   return(new("function_distribution", fun="base::sample", args=list(size="n", x=as.numeric(x), prob=as.numeric(prob), replace=as.logical(replace))))
 }
+
+#_______________________________________________________________________________
+#----                     binomial_distribution class                       ----
+#_______________________________________________________________________________
+
+#' 
+#' Binomial distribution class.
+#' 
+#' @export
+setClass(
+  "binomial_distribution",
+  representation(
+  ),
+  contains="function_distribution"
+)
 
 #'
 #' Binomial distribution.
@@ -465,7 +524,17 @@ setMethod("loadFromJSON", signature=c("fixed_distribution", "json_element"), def
   return(object)
 })
 
+setMethod("loadFromJSON", signature=c("uniform_distribution", "json_element"), definition=function(object, json) {
+  object <- UniformDistribution(min=json@data$min, max=json@data$max)
+  return(object)
+})
+
 setMethod("loadFromJSON", signature=c("normal_distribution", "json_element"), definition=function(object, json) {
   object <- NormalDistribution(mean=json@data$mean, sd=json@data$sd)
+  return(object)
+})
+
+setMethod("loadFromJSON", signature=c("lognormal_distribution", "json_element"), definition=function(object, json) {
+  object <- LogNormalDistribution(meanlog=json@data$meanlog, sdlog=json@data$sdlog)
   return(object)
 })
