@@ -281,7 +281,6 @@
         }
       },
       "required": [
-        "type",
         "value"
       ],
       "additionalProperties": false
@@ -307,7 +306,6 @@
         }
       },
       "required": [
-        "type",
         "values"
       ],
       "additionalProperties": false
@@ -334,7 +332,6 @@
         }
       },
       "required": [
-        "type",
         "min",
         "max"
       ],
@@ -362,7 +359,6 @@
         }
       },
       "required": [
-        "type",
         "mean",
         "sd"
       ],
@@ -390,7 +386,6 @@
         }
       },
       "required": [
-        "type",
         "meanlog",
         "sdlog"
       ],
