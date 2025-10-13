@@ -538,3 +538,15 @@ setMethod("loadFromJSON", signature=c("lognormal_distribution", "json_element"),
   object <- LogNormalDistribution(meanlog=json@data$meanlog, sdlog=json@data$sdlog)
   return(object)
 })
+
+setMethod("loadFromJSON", signature=c("discrete_distribution", "json_element"), definition=function(object, json) {
+  items <- json@data$items
+  values <- NULL
+  prob <- NULL
+  for (item in items) {
+    values <- c(values, item$value)
+    prob <- c(prob, item$probability)
+  }
+  object <- DiscreteDistribution(x=values, prob=prob, replace=TRUE)
+  return(object)
+})

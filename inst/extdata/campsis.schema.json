@@ -391,10 +391,61 @@
       ],
       "additionalProperties": false
     },
+    "discrete_distribution_item": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "discrete_distribution_item"
+        },
+        "value": {
+          "type": "number",
+          "description": "Discrete value in model (usually an integer)"
+        },
+        "probability": {
+          "type": "number",
+          "description": "Probability of generating this item (number must be between 0 and 1)"
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional label representing this discrete item"
+        }
+      },
+      "required": [
+        "value",
+        "probability"
+      ]
+    },
+    "discrete_distribution": {
+      "title": "Discrete distribution",
+      "allOf": [
+        {
+          "$ref": "#/$defs/distribution"
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "discrete_distribution"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/discrete_distribution_item"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
     "covariate": {
       "title": "Model covariate",
       "type": "object",
       "properties": {
+        "type": {
+          "const": "covariate"
+        },
         "name": {
           "type": "string",
           "description": "Name of the covariate"
@@ -415,6 +466,9 @@
             },
             {
               "$ref": "#/$defs/lognormal_distribution"
+            },
+            {
+              "$ref": "#/$defs/discrete_distribution"
             }
           ],
           "discriminator": {

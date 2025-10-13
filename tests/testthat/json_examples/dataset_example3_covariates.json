@@ -58,6 +58,27 @@
           "meanlog": 4.5,
           "sdlog": 2.3
         }
+      },
+      {
+        "type": "covariate",
+        "name": "SEX",
+        "distribution": {
+          "type": "discrete_distribution",
+          "items": [
+            {
+              "type": "discrete_distribution_item",
+              "value": 0,
+              "probability": 0.6,
+              "label": "F"
+            },
+            {
+              "type": "discrete_distribution_item",
+              "value": 1,
+              "probability": 0.4,
+              "label": "M"
+            }
+          ]
+        }
       }
     ]
   }

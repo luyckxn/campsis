@@ -58,7 +58,8 @@ test_that("Import Campsis dataset in JSON format", {
     add(Covariate("BW2", c(70.5, 80.5, 90.5))) %>%
     add(Covariate("BW3", NormalDistribution(70.5, 10.5))) %>%
     add(Covariate("BW4", UniformDistribution(50.0, 100.0))) %>%
-    add(Covariate("BW5", LogNormalDistribution(4.5, 2.3)))
+    add(Covariate("BW5", LogNormalDistribution(4.5, 2.3))) %>%
+    add(Covariate("SEX", DiscreteDistribution(x=c(0,1), c(0.6,0.4))))
   expDataset3 <- Dataset() %>%
     add(expArm3)
   
