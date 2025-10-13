@@ -469,6 +469,9 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
   if (iteration@index > 1) {
     model <- removeInitialConditions(model)
   }
+  
+  # Compartment names
+  cmtNames <- model@compartments@list %>% purrr::map_chr(~.x %>% toString())
 
   # Export to RxODE / rxode2
   if (is(dest, "rxode_engine")) {
@@ -491,6 +494,7 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
     
     # Extra care to additional outputs which need to be explicitly declared with mrgsolve 
     outvars_ <- outvars[!(outvars %in% dropOthers())]
+    outvars_ <- outvars_[!outvars_ %in% cmtNames] # Exclude compartment names
     outvars_ <- unique(c(outvars_, "ARM", "EVENT_RELATED"))
     if (dosing) {
       # These variables are not output by default in mrgsolve when dosing is TRUE
@@ -511,9 +515,6 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
     return(subdataset)
   })
 
-  # Compartment names
-  cmtNames <- model@compartments@list %>% purrr::map_chr(~.x %>% toString())
-  
   return(list(declare=declare, engineModel=engineModel, subdatasets=subdatasets,
               dropOthers=dropOthers, iteration=iteration, cmtNames=cmtNames))
 }
