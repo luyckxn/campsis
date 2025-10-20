@@ -71,7 +71,8 @@ test_that("Import Campsis dataset in JSON format", {
     add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=0)) %>%
     add(Observations(TimeSequence(0, 24, by=1))) %>%
     add(Covariate("BW", NormalDistribution(70.5, 10.5))) %>%
-    add(DoseAdaptation("AMT*WT", compartments="ABS"))
+    add(DoseAdaptation("AMT*WT", compartments="ABS")) %>%
+    add(DoseAdaptation("TO_ALL_CMTS"))
   expDataset4 <- Dataset() %>%
     add(expArm4)
   

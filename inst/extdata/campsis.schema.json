@@ -497,14 +497,14 @@
         },
         "compartments": {
           "type": "array",
+          "description": "List of compartments where the previous formula applies. By default, the formula is applied to all compartments.",
           "items": {
             "type": "string"
           }
         }
       },
       "required": [
-        "formula",
-        "compartments"
+        "formula"
       ]
     }
   }
