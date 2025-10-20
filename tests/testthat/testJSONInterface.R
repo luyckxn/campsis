@@ -64,6 +64,18 @@ test_that("Import Campsis dataset in JSON format", {
     add(expArm3)
   
   expect_equal(dataset3, expDataset3)
+  
+  # Example 4: dose adaptation
+  dataset4 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example4_dose_adaptation.json"))
+  expArm4 <- Arm(subjects=100, label="My dataset") %>%
+    add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=0)) %>%
+    add(Observations(TimeSequence(0, 24, by=1))) %>%
+    add(Covariate("BW", NormalDistribution(70.5, 10.5))) %>%
+    add(DoseAdaptation("AMT*WT", compartments="ABS"))
+  expDataset4 <- Dataset() %>%
+    add(expArm4)
+  
+  expect_equal(dataset4, expDataset4)
 })
 
 test_that("Import Campsis settings in JSON format", {

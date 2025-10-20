@@ -42,6 +42,9 @@
               },
               {
                 "$ref": "#/$defs/covariate"
+              },
+              {
+                "$ref": "#/$defs/dose_adaptation"
               }
             ]
           }
@@ -479,6 +482,29 @@
       "required": [
         "name",
         "distribution"
+      ]
+    },
+    "dose_adaptation": {
+      "title": "Static dose adaptation based on a formula",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "dose_adaptation"
+        },
+        "formula": {
+          "type": "string",
+          "description": "Any formula to adapt the dose amount. E.g. 'AMT*WT' for kg-based doses, where AMT is the original amount given in the bolus/infusion."
+        },
+        "compartments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "formula",
+        "compartments"
       ]
     }
   }
