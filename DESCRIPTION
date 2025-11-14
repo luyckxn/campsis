@@ -116,4 +116,4 @@ Collate:
     'simulate.R'
     'results_processing.R'
     'default_plot.R'
-Remotes: Calvagone/campsismod@json-interface
+Remotes: Calvagone/campsismod@develop
