@@ -24,6 +24,40 @@ simulate <- function(model, dataset, dest=NULL, events=NULL, scenarios=NULL, tab
 }
 
 setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenarios=NULL, tablefun=NULL, outvars=NULL, outfun=NULL, seed=NULL, replicates=1, dosing=FALSE, settings=NULL) {
+
+  if (is.null(settings)) {
+    settings <- Settings()
+  }
+  
+  # Loading from JSON
+  if (is.character(model)) {
+    model <- loadFromJSON(CampsisModel(), model)
+  }
+  if (is.character(dataset)) {
+    dataset <- loadFromJSON(Dataset(), dataset)
+  }
+  if (is.character(settings)) {
+    settings <- loadFromJSON(Settings(), settings)
+  }
+  if (is.character(scenarios)) {
+    scenarios <- loadFromJSON(Scenarios(), scenarios)
+  }
+  
+  # Propagate default settings
+  defaultSettings <- settings@default
+  if (is.null(dest)) {
+    dest <- defaultSettings@engine
+  }
+  if (is.null(seed)) {
+    seed <- defaultSettings@seed
+  }
+  if (is.null(outvars)) {
+    outvars <- defaultSettings@outvars
+  }
+  if (is.null(dosing)) {
+    dosing <- defaultSettings@dosing
+  }
+  
   dest <- preprocessDest(dest)
   events <- preprocessEvents(events)
   scenarios <- preprocessScenarios(scenarios)
@@ -32,10 +66,10 @@ setGeneric("simulate", function(model, dataset, dest=NULL, events=NULL, scenario
   outfun <- preprocessOutfun(outfun)
   seed <- getSeed(seed)
   replicates <- preprocessReplicates(replicates, model)
-  settings <- preprocessSettings(settings, dest)
   dosing <- preprocessDosing(dosing)
-  
-  standardGeneric("simulate")
+  settings <- preprocessSettings(settings, dest)
+
+  return(standardGeneric("simulate"))
 })
 
 #' Get simulation engine type.
@@ -155,7 +189,7 @@ simulateDelegateCore <- function(model, dataset, dest, events, tablefun, outvars
 
     # Calling events
     for (event in events@list) {
-      if (iteration@end %in% event@times) {
+      if (iteration@end %in% as.numeric(event@times)) {
         inits <- event@fun(inits)
       }
     }
@@ -306,11 +340,18 @@ simulateDelegate <- function(model, dataset, dest, events, scenarios, tablefun, 
   seqReplicates <- seq_len(replicates)
   seqReplicates <- as.list(seqReplicates) %>%
     stats::setNames(seqReplicates) # Names are added for furrr (added automatically to the output with .id="replicate")
-  
+
   allRep <- seqReplicates %>% furrr::future_map_dfr(.f=function(replicate) {
     # Export model for each replicate
     model_ <- replicatedModel %>%
       campsismod::export(dest=CampsisModel(), index=replicate)
+    
+    # Disable variabilities ('IIV', 'RUV', etc.)
+    disabledVariabilities <- settings@default@disabled_variabilities
+    if (length(disabledVariabilities) > 0) {
+      model_ <- model_ %>%
+        disable(disabledVariabilities)
+    }
     
     # Update replicate counter
     settings@internal@progress <- settings@internal@progress %>% updateReplicate(replicate)
@@ -428,6 +469,9 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
   if (iteration@index > 1) {
     model <- removeInitialConditions(model)
   }
+  
+  # Compartment names
+  cmtNames <- model@compartments@list %>% purrr::map_chr(~.x %>% toString())
 
   # Export to RxODE / rxode2
   if (is(dest, "rxode_engine")) {
@@ -450,6 +494,7 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
     
     # Extra care to additional outputs which need to be explicitly declared with mrgsolve 
     outvars_ <- outvars[!(outvars %in% dropOthers())]
+    outvars_ <- outvars_[!outvars_ %in% cmtNames] # Exclude compartment names
     outvars_ <- unique(c(outvars_, "ARM", "EVENT_RELATED"))
     if (dosing) {
       # These variables are not output by default in mrgsolve when dosing is TRUE
@@ -470,9 +515,6 @@ processSimulateArguments <- function(model, dataset, dest, outvars, dosing, sett
     return(subdataset)
   })
 
-  # Compartment names
-  cmtNames <- model@compartments@list %>% purrr::map_chr(~.x %>% toString())
-  
   return(list(declare=declare, engineModel=engineModel, subdatasets=subdatasets,
               dropOthers=dropOthers, iteration=iteration, cmtNames=cmtNames))
 }
@@ -527,7 +569,7 @@ setMethod("simulate", signature=c("campsis_model", "tbl_df", "rxode_engine", "ev
   summary <- settings@internal@dataset_summary
   
   # Retrieve simulation config
-  config <- processSimulateArguments(model=model, dataset=dataset, dest=dest, outvars=outvars, settings=settings)
+  config <- processSimulateArguments(model=model, dataset=dataset, dest=dest, outvars=outvars, dosing=dosing, settings=settings)
   progress <- settings@internal@progress
   progress@slices <- config$subdatasets %>% length()
 

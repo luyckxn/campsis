@@ -251,6 +251,35 @@ processRefArg <- function(ref) {
 }
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+bolusInfFromJSON <- function(object, json) {
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
+  object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
+  object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
+  object@lag <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
+  object@ref <- processRefArg(NULL)
+  return(object)
+}
+
+setMethod("loadFromJSON", signature=c("bolus_wrapper", "json_element"), definition=function(object, json) {
+  return(bolusInfFromJSON(object=object, json=json))
+})
+
+setMethod("loadFromJSON", signature=c("infusion_wrapper", "json_element"), definition=function(object, json) {
+  duration <- NULL
+  if (!is.null(json@data$duration)) {
+    duration <- json@data$duration
+    json@data$duration <- NULL
+  }
+  object <- bolusInfFromJSON(object=object, json=json)
+  object@duration <- toExplicitDistributionList(duration, cmtNo=length(object@compartment))
+  object@rate <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
+  return(object)
+})
+
+#_______________________________________________________________________________
 #----                             sample                                    ----
 #_______________________________________________________________________________
 

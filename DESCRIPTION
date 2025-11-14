@@ -1,7 +1,7 @@
 Type: Package
 Package: campsis
 Title: Generic PK/PD Simulation Platform CAMPSIS
-Version: 1.7.0
+Version: 1.8.0
 Authors@R: 
     person("Nicolas", "Luyckx", , "nicolas.luyckx@calvagone.com", role = c("aut", "cre"))
 Description: A generic, easy-to-use and intuitive
@@ -30,6 +30,8 @@ Imports:
     furrr,
     future,
     ggplot2,
+    jsonlite,
+    jsonvalidate,
     MASS,
     methods,
     progressr,
@@ -69,6 +71,7 @@ Collate:
     'seed.R'
     'distribution.R'
     'dataset_config.R'
+    'time_vector.R'
     'time_entry.R'
     'repeated_schedule.R'
     'occasion.R'
@@ -89,13 +92,16 @@ Collate:
     'arms.R'
     'event.R'
     'events.R'
-    'scenario.R'
-    'scenarios.R'
     'simulation_engine.R'
     'dataset.R'
+    'scenario_action.R'
+    'scenario_actions.R'
+    'scenario.R'
+    'scenarios.R'
     'event_logic.R'
     'dataset_summary.R'
     'outfun.R'
+    'default_settings.R'
     'hardware_settings.R'
     'simulation_progress.R'
     'solver_settings.R'
@@ -105,7 +111,9 @@ Collate:
     'internal_settings.R'
     'simulation_settings.R'
     'plan_setup.R'
+    'json_interface.R'
     'simulate_preprocess.R'
     'simulate.R'
     'results_processing.R'
     'default_plot.R'
+Remotes: Calvagone/campsismod@json-interface

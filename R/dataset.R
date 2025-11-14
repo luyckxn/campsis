@@ -191,6 +191,20 @@ setMethod("length", signature=c("dataset"), definition=function(x) {
 })
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+setMethod("loadFromJSON", signature=c("dataset", "json_element"), definition=function(object, json) {
+  object <- jsonToCampsisDataset(object=object, json=json)
+  return(object)
+})
+
+setMethod("loadFromJSON", signature=c("dataset", "character"), definition=function(object, json) {
+  schema <- system.file("extdata", "campsis.schema.json", package="campsis")
+  return(loadFromJSON(object=object, json=openJSON(json=json, schema=schema)))
+})
+
+#_______________________________________________________________________________
 #----                             replace                                   ----
 #_______________________________________________________________________________
 
@@ -220,6 +234,19 @@ setMethod("setSubjects", signature = c("dataset", "integer"), definition = funct
     object <- object %>% replace(arm)
   }
   methods::validObject(object)
+  return(object)
+})
+
+#_______________________________________________________________________________
+#----                             setLabel                                  ----
+#_______________________________________________________________________________
+
+#' @rdname setLabel
+#' @importFrom methods validObject
+setMethod("setLabel", signature = c("dataset", "character"), definition = function(object, x) {
+  object <- object %>% createDefaultArmIfNotExists()
+  object@arms@list[[1]] <- object@arms@list[[1]] %>%
+    setLabel(x)
   return(object)
 })
 
@@ -343,7 +370,10 @@ applyCompartmentCharacteristics <- function(table, properties) {
 #' @importFrom dplyr all_of
 setMethod("export", signature=c("dataset", "character"), definition=function(object, dest, seed=NULL, model=NULL, settings=NULL, event_related_column=FALSE) {
   destinationEngine <- getSimulationEngineType(dest)
-  settings <- preprocessSettings(settings, dest) # In case of NULL settings
+  if (is.null(settings)) {
+    settings <- Settings()
+  }
+  settings <- preprocessSettings(settings, dest)
   table <- object %>% export(dest=destinationEngine, seed=seed, model=model, settings=settings)
   if (!event_related_column) {
     table <- table %>% dplyr::select(-dplyr::all_of("EVENT_RELATED"))
@@ -431,6 +461,7 @@ exportDelegate <- function(object, dest, model, arm_offset=NULL, offset_within_a
     treatment <- protocol@treatment %>%
       unwrapTreatment() %>%
       assignDoseNumber()
+    doseTimes <- getTimes(treatment, unwrap=FALSE)
     
     if (treatment %>% length() > 0) {
       maxDoseNumber <- (treatment@list[[treatment %>% length()]])@dose_number
@@ -455,7 +486,7 @@ exportDelegate <- function(object, dest, model, arm_offset=NULL, offset_within_a
     # Create the base table with all treatment entries and observations
     needsDV <- observations@list %>% purrr::map_lgl(~.x@dv %>% length() > 0) %>% any()
     table <- c(treatment@list, observations@list) %>%
-      purrr::map_df(.f=~sample(.x, n=subjects, ids=ids, config=config, armID=armID, needsDV=needsDV))
+      purrr::map_df(.f=~sample(.x, n=subjects, ids=ids, config=config, armID=armID, needsDV=needsDV, doseTimes=doseTimes))
     table <- table %>% dplyr::arrange(dplyr::across(c("ID","TIME","EVID")))
 
     # Sampling covariates
