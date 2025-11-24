@@ -5,8 +5,9 @@ toCampsisElement <- function(json) {
   if (type=="bolus" || type=="infusion") {
     if (!is.null(json$ii) && !is.null(json$addl)) {
       type <- paste0(type, "_wrapper")
-    }  
+    }
   }
+  
   if (type=="covariate") {
     type <- paste0("fixed_", type)
   }

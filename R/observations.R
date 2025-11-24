@@ -113,7 +113,24 @@ setMethod("loadFromJSON", signature=c("observations", "json_element"), definitio
     object@times <- TimeVector(unlist(json@data$times))
     json@data$times <- NULL
   }
+  # Retrieving time unit in JSON
+  unit <- "hour" # Default
+  if (!is.null(json@data$unit)) {
+    unit <- json@data$unit
+    json@data$unit <- NULL
+  }
   object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
+  
+  # Handling time unit
+  if (is(object@times, "time_sequence")) {
+    object@times@start <- convertTime(object@times@start, from=unit, to="hour")
+    object@times@end <- convertTime(object@times@end, from=unit, to="hour")
+    object@times@by <- convertTime(object@times@by, from=unit, to="hour")
+  } else if (is(object@times, "time_vector")) {
+      object@times@.Data <- convertTime(object@times@.Data, from=unit, to="hour")
+  } else {
+    stop("Either a 'time_vector' or a 'time_sequence'")
+  }
   return(object)
 })
 

@@ -105,6 +105,14 @@
         "addl": {
           "type": "integer",
           "description": "Number of additional doses"
+        },
+        "time_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'time' field. Default unit is 'hour'"
+        },
+        "ii_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'ii' field. Default unit is 'hour'"
         }
       },
       "required": [
@@ -140,6 +148,18 @@
         },
         "duration": {
           "type": "number"
+        },
+        "time_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'time' field. Default unit is 'hour'"
+        },
+        "ii_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'ii' field. Default unit is 'hour'"
+        },
+        "duration_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'duration' field. Default unit is 'hour'"
         }
       },
       "required": [
@@ -167,6 +187,10 @@
               "$ref": "#/$defs/time_sequence"
             }
           ]
+        },
+        "unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'times' field. Default unit is 'hour'"
         },
         "rep": {
           "oneOf": [
@@ -506,6 +530,10 @@
       "required": [
         "formula"
       ]
+    },
+    "time_unit": {
+      "type": "string",
+      "enum": ["second", "minute", "hour", "day", "week", "month", "year"]
     }
   }
 }

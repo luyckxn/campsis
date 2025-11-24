@@ -255,6 +255,15 @@ processRefArg <- function(ref) {
 #_______________________________________________________________________________
 
 bolusInfFromJSON <- function(object, json) {
+  # Time unit pre-processing
+  if (!is.null(json@data$time) && !is.null(json@data$time_unit)) {
+    json@data$time <- convertTime(json@data$time, from=json@data$time_unit, to="hour")
+    json@data$time_unit <- NULL
+  }
+  if (!is.null(json@data$ii) && !is.null(json@data$ii_unit)) {
+    json@data$ii <- convertTime(json@data$ii, from=json@data$ii_unit, to="hour")
+    json@data$ii_unit <- NULL
+  }
   object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
   object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
   object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
@@ -268,6 +277,12 @@ setMethod("loadFromJSON", signature=c("bolus_wrapper", "json_element"), definiti
 })
 
 setMethod("loadFromJSON", signature=c("infusion_wrapper", "json_element"), definition=function(object, json) {
+  # Duration unit pre-processing
+  if (!is.null(json@data$duration) && !is.null(json@data$duration_unit)) {
+    json@data$duration <- convertTime(json@data$duration, from=json@data$duration_unit, to="hour")
+    json@data$duration_unit <- NULL
+  }
+  # Process duration manually
   duration <- NULL
   if (!is.null(json@data$duration)) {
     duration <- json@data$duration

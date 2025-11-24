@@ -39,6 +39,14 @@ test_that("Import Campsis dataset in JSON format", {
   
   expect_equal(dataset1c, expDataset1c)
   
+  # 1D = 1A but all time units in days
+  dataset1d <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1d.json"))
+  expect_equal(dataset1d, expDataset1a)
+  
+  # 1E = 1B but all time units in days
+  dataset1e <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1e.json"))
+  expect_equal(dataset1e, expDataset1b)
+  
   # Example 2: dataset settings
   dataset2 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example2.json"))
   expArm2 <- Arm(subjects=100, label="My dataset") %>%
