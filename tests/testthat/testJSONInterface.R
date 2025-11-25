@@ -54,7 +54,7 @@ test_that("Import Campsis dataset in JSON format", {
     add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
   expDataset2 <- Dataset() %>%
     add(expArm2) %>%
-    add(DatasetConfig(exportTSLD=TRUE, exportTDOS=TRUE))
+    add(DatasetConfig(exportTSLD=TRUE, exportTDOS=TRUE, timeUnitExport="day"))
 
   expect_equal(dataset2, expDataset2)
   

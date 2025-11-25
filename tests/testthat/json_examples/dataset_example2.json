@@ -34,6 +34,7 @@
   {
     "type": "dataset_config",
     "export_tsld": true,
-    "export_tdos": true
+    "export_tdos": true,
+    "time_unit_export": "day"
   }
 ]

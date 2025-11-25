@@ -277,11 +277,16 @@
         "export_tdos": {
           "type": "boolean",
           "description": "Export variable TDOS (time of current dose) in the dataset for rxode2 / mrgsolve"
+        },
+        "time_unit_export": {
+          "$ref": "#/$defs/time_unit",
+          "description": "TIME column unit in exported dataset."
         }
       },
       "required": [
         "export_tsld",
-        "export_tdos"
+        "export_tdos",
+        "time_unit_export"
       ]
     },
     "distribution": {
