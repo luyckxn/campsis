@@ -45,6 +45,9 @@
               },
               {
                 "$ref": "#/$defs/dose_adaptation"
+              },
+              {
+                "$ref": "#/$defs/bootstrap"
               }
             ]
           }
@@ -538,7 +541,59 @@
     },
     "time_unit": {
       "type": "string",
-      "enum": ["second", "minute", "hour", "day", "week", "month", "year"]
+      "enum": [
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year"
+      ]
+    },
+    "bootstrap": {
+      "title": "Bootstrap layer.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "bootstrap"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bootstrap_row"
+          },
+          "description": "Bootstrap data in the form of a list of dictionaries."
+        },
+        "replacement": {
+          "type": "bool",
+          "description": "Values can be reused or not when already drawn."
+        },
+        "random": {
+          "type": "bool",
+          "description": "Randomly draw the bootstrap rows (1 row = 1 individual)."
+        }
+      },
+      "required": [
+        "data",
+        "replacement",
+        "random"
+      ]
+    },
+    "bootstrap_row": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "bootstrap_row"
+        },
+        "BS_ID": {
+          "type": "integer"
+        }
+      },
+      "description": "Each bootstrap row contains the covariates of a specific individual. BS_ID is the individual ID. Other properties are the covariates to bootstrap for this individual.",
+      "required": [
+      ],
+      "additionalProperties": true
     }
   }
 }
