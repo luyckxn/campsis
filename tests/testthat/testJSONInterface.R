@@ -85,6 +85,23 @@ test_that("Import Campsis dataset in JSON format", {
     add(expArm4)
   
   expect_equal(dataset4, expDataset4)
+  
+  # Example 1 with bootstrap
+  dataset5a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example1.json"))
+  
+  expArm5a <- Arm(subjects=100, label="My dataset") %>%
+    add(Observations(TimeSequence(0, 24, by=1))) %>%
+    add(Bootstrap(data=data.frame(BS_ID=c(1,2,3), BW=c(70,75,80), AGE=c(30,35,40)), replacement=TRUE, random=TRUE, export_id=TRUE))
+  
+  expDataset5a <- Dataset() %>%
+    add(expArm5a)
+    
+  expect_equal(dataset5a, expDataset5a)
+  
+  # Example 2 with bootstrap (same but no row identifier)
+  dataset5b <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example2.json"))
+  expect_equal(dataset5b, expDataset5a)
+  expect_equal(dataset5a, dataset5b)
 })
 
 test_that("Import Campsis settings in JSON format", {

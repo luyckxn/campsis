@@ -566,11 +566,11 @@
           "description": "Bootstrap data in the form of a list of dictionaries."
         },
         "replacement": {
-          "type": "bool",
+          "type": "boolean",
           "description": "Values can be reused or not when already drawn."
         },
         "random": {
-          "type": "bool",
+          "type": "boolean",
           "description": "Randomly draw the bootstrap rows (1 row = 1 individual)."
         }
       },
@@ -590,7 +590,7 @@
           "type": "integer"
         }
       },
-      "description": "Each bootstrap row contains the covariates of a specific individual. BS_ID is the individual ID. Other properties are the covariates to bootstrap for this individual.",
+      "description": "Each bootstrap row contains the covariates of a specific individual. BS_ID is a non-mandatory identifier for this row. Other properties are the covariates to bootstrap for this individual.",
       "required": [
       ],
       "additionalProperties": true
