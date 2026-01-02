@@ -116,6 +116,10 @@
         "ii_unit": {
           "$ref": "#/$defs/time_unit",
           "description": "Time unit of 'ii' field. Default unit is 'hour'"
+        },
+        "rep": {
+          "$ref": "#/$defs/cyclic_schedule",
+          "description": "Repeat this bolus wrapper using a cyclic schedule."
         }
       },
       "required": [
@@ -163,6 +167,10 @@
         "duration_unit": {
           "$ref": "#/$defs/time_unit",
           "description": "Time unit of 'duration' field. Default unit is 'hour'"
+        },
+        "rep": {
+          "$ref": "#/$defs/cyclic_schedule",
+          "description": "Repeat this infusion wrapper using a cyclic schedule."
         }
       },
       "required": [
@@ -255,7 +263,11 @@
         },
         "duration": {
           "type": "number",
-          "description": "Duration of the cyclic period"
+          "description": "Duration of the cyclic period."
+        },
+        "duration_unit": {
+          "$ref": "#/$defs/time_unit",
+          "description": "Time unit of 'duration' field."
         },
         "repetitions": {
           "type": "integer",

@@ -4,7 +4,7 @@ context("Test the JSON interface")
 
 testFolder <-  file.path(getwd(), test_path())
 
-test_that("Import Campsis dataset in JSON format", {
+test_that("Import a few basic Campsis datasets from JSON", {
   
   # 1A
   dataset1a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example1a.json"))
@@ -72,36 +72,53 @@ test_that("Import Campsis dataset in JSON format", {
     add(expArm3)
   
   expect_equal(dataset3, expDataset3)
-  
-  # Example 4: dose adaptation
-  dataset4 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_example4_dose_adaptation.json"))
-  expArm4 <- Arm(subjects=100, label="My dataset") %>%
+})
+
+test_that("Import Campsis datasets that include a dose adaptation layer from JSON", {
+  dataset <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_dose_adaptation_example1.json"))
+  expArm <- Arm(subjects=100, label="My dataset") %>%
     add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=0)) %>%
     add(Observations(TimeSequence(0, 24, by=1))) %>%
     add(Covariate("BW", NormalDistribution(70.5, 10.5))) %>%
     add(DoseAdaptation("AMT*WT", compartments="ABS")) %>%
     add(DoseAdaptation("TO_ALL_CMTS"))
-  expDataset4 <- Dataset() %>%
-    add(expArm4)
+  expDataset <- Dataset() %>%
+    add(expArm)
   
-  expect_equal(dataset4, expDataset4)
-  
+  expect_equal(dataset, expDataset)
+})
+
+test_that("Import Campsis datasets that include a bootstrap layer from JSON", {
   # Example 1 with bootstrap
-  dataset5a <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example1.json"))
+  dataset1 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example1.json"))
   
-  expArm5a <- Arm(subjects=100, label="My dataset") %>%
+  expArm1 <- Arm(subjects=100, label="My dataset") %>%
     add(Observations(TimeSequence(0, 24, by=1))) %>%
     add(Bootstrap(data=data.frame(BS_ID=c(1,2,3), BW=c(70,75,80), AGE=c(30,35,40)), replacement=TRUE, random=TRUE, export_id=TRUE))
   
-  expDataset5a <- Dataset() %>%
-    add(expArm5a)
-    
-  expect_equal(dataset5a, expDataset5a)
+  expDataset1 <- Dataset() %>%
+    add(expArm1)
+  
+  expect_equal(dataset1, expDataset1)
   
   # Example 2 with bootstrap (same but no row identifier)
-  dataset5b <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example2.json"))
-  expect_equal(dataset5b, expDataset5a)
-  expect_equal(dataset5a, dataset5b)
+  dataset2 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_bootstrap_example2.json"))
+  expect_equal(dataset2, expDataset1)
+  expect_equal(dataset1, dataset2)
+})
+
+test_that("Import Campsis datasets that include a cyclic treatment schedule from JSON", {
+  
+  dataset <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_cyclic_schedule_example1.json"))
+  
+  expArm <- Arm(subjects=100, label="My dataset") %>%
+    add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=6, rep=CyclicSchedule(duration=24*28, repetitions=1))) %>%
+    add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
+  
+  expDataset <- Dataset() %>%
+    add(expArm)
+  
+  expect_equal(dataset, expDataset)
 })
 
 test_that("Import Campsis settings in JSON format", {

@@ -140,6 +140,20 @@ setMethod("length", signature=c("repeat_at_schedule"), definition=function(x) {
 })
 
 #_______________________________________________________________________________
+#----                           loadFromJSON                                ----
+#_______________________________________________________________________________
+
+setMethod("loadFromJSON", signature=c("cyclic_schedule", "json_element"), definition=function(object, json) {
+  # Time unit pre-processing
+  if (!is.null(json@data$duration_unit)) {
+    json@data$duration <- convertTime(json@data$duration, from=json@data$duration_unit, to="hour")
+    json@data$duration_unit <- NULL
+  }
+  object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
+  return(object)
+})
+
+#_______________________________________________________________________________
 #----                           repeatSchedule                               ----
 #_______________________________________________________________________________
 
