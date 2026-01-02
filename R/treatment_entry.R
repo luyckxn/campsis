@@ -264,8 +264,12 @@ bolusInfFromJSON <- function(object, json) {
     json@data$ii <- convertTime(json@data$ii, from=json@data$ii_unit, to="hour")
     json@data$ii_unit <- NULL
   }
+  if (!is.null(json@data$rep) && !is.null(json@data$rep$duration_unit)) {
+    json@data$rep$duration <- convertTime(json@data$rep$duration, from=json@data$rep$duration_unit, to="hour")
+    json@data$rep$duration_unit <- NULL
+  }
+  object@rep = new("undefined_schedule") # Default, no cycles
   object <- campsismod::mapJSONPropertiesToS4Slots(object, json)
-  object@rep <- processRepeatArg(rep=NULL, iiAddl=checkIIandADDL(time=object@time, ii=object@ii, addl=object@addl))
   object@f <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
   object@lag <- toExplicitDistributionList(NULL, cmtNo=length(object@compartment))
   object@ref <- processRefArg(NULL)

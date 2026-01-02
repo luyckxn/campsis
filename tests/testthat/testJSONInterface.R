@@ -109,16 +109,20 @@ test_that("Import Campsis datasets that include a bootstrap layer from JSON", {
 
 test_that("Import Campsis datasets that include a cyclic treatment schedule from JSON", {
   
-  dataset <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_cyclic_schedule_example1.json"))
+  dataset1 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_cyclic_schedule_example1.json"))
   
-  expArm <- Arm(subjects=100, label="My dataset") %>%
+  expArm1 <- Arm(subjects=100, label="My dataset") %>%
     add(Bolus(time=0, amount=50, compartment="ABS", ii=24, addl=6, rep=CyclicSchedule(duration=24*28, repetitions=1))) %>%
     add(Observations(TimeSequence(0, 24, by=1), rep=DosingSchedule()))
   
-  expDataset <- Dataset() %>%
-    add(expArm)
+  expDataset1 <- Dataset() %>%
+    add(expArm1)
   
-  expect_equal(dataset, expDataset)
+  expect_equal(dataset1, expDataset1)
+  
+  # Same but duration in hours and unit is not specified
+  dataset2 <- loadFromJSON(Dataset(), file.path(testFolder, "json_examples", "dataset_cyclic_schedule_example2.json"))
+  expect_equal(dataset2, expDataset1)
 })
 
 test_that("Import Campsis settings in JSON format", {
