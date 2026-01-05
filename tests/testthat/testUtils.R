@@ -137,9 +137,6 @@ campsisTest <- function(simulation, test, env) {
     # Check if package exists (as test engines are suggested packages)
     # This is needed for CRAN when package is tested with `_R_CHECK_DEPENDS_ONLY_`=TRUE
     if (engineInstalled(testEngine)) {
-      withr::local_options(
-        future.connections.onMisuse = "ignore"
-      )
       env$results <- eval(simulation, envir=env)
       eval(test, envir=env)
     }

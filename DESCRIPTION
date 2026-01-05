@@ -60,7 +60,6 @@ Suggests:
     testthat,
     tictoc,
     vdiffr,
-    withr,
     xfun
 VignetteBuilder: 
     knitr
