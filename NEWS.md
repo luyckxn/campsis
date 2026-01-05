@@ -1,8 +1,8 @@
 # campsis 1.8.0
 
 * JSON-based interface to import Campsis datasets #184
+* Test failure under mrgsolve 1.7.0 #186
 * Update vdiffr tests #187
-* Fix warnings from package 'future' #188
 
 # campsis 1.7.0
 
