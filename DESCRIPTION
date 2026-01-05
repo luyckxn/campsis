@@ -60,11 +60,12 @@ Suggests:
     testthat,
     tictoc,
     vdiffr,
+    withr,
     xfun
 VignetteBuilder: 
     knitr
 Remotes: 
-    Calvagone/campsismod@develop
+    Calvagone/campsismod
 Encoding: UTF-8
 Language: en-US
 LazyData: true
